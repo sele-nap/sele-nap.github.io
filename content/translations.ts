@@ -109,6 +109,29 @@ export const translations = {
           highlights: [
             'Réalisation d\'un prototype VR sous Unity (C#) pour un projet de thèse',
           ]
+        },
+        {
+          title: 'Responsable Marketing Numérique',
+          period: 'Janvier – Mars 2020',
+          company: 'Studio Gyhel',
+          location: 'Annecy, France',
+          highlights: [
+            'Mise en place de la stratégie marketing et communication pour un studio de jeux vidéo indie',
+            'Animation des réseaux sociaux et des communautés gaming',
+            'Préparation d\'une campagne de financement participatif',
+            'Développement de la stratégie transmédia du jeu',
+          ]
+        },
+        {
+          title: 'Stage en Communication',
+          period: 'Mai – Juin 2016',
+          company: 'Le Léopard Masqué',
+          location: 'Paris, France',
+          highlights: [
+            'Gestion du service de presse',
+            'Création de supports visuels pour les salons du livre (kakemonos, bons de commande)',
+            'Participation aux ventes',
+          ]
         }
       ]
     },
@@ -236,6 +259,29 @@ export const translations = {
           location: 'Chambéry, France',
           highlights: [
             'Built a VR prototype in Unity (C#) for a PhD research project',
+          ]
+        },
+        {
+          title: 'Digital Marketing Manager',
+          period: 'January – March 2020',
+          company: 'Studio Gyhel',
+          location: 'Annecy, France',
+          highlights: [
+            'Defined the marketing and communication strategy for an indie video game studio',
+            'Managed social media across general and gaming-specific platforms',
+            'Prepared a crowdfunding campaign',
+            'Developed the transmedia strategy for the game',
+          ]
+        },
+        {
+          title: 'Communications Intern',
+          period: 'May – June 2016',
+          company: 'Le Léopard Masqué',
+          location: 'Paris, France',
+          highlights: [
+            'Managed press relations',
+            'Created visual materials for book fairs (banners, order forms)',
+            'Supported sales activities',
           ]
         }
       ]
