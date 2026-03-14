@@ -10,12 +10,11 @@ interface CardDef {
   label: string
   accentColor: string
   position: [number, number, number]
-  rotationY: number
 }
 
 type SlotDef = { position: [number, number, number] }
 
-// 4 cartes en ligne (paysage / desktop)
+// 4 cards in a row (landscape / desktop)
 const LANDSCAPE_SLOTS: SlotDef[] = [
   { position: [-3.2, 0, 0] },
   { position: [-1.07, 0, 0] },
@@ -23,7 +22,7 @@ const LANDSCAPE_SLOTS: SlotDef[] = [
   { position: [3.2, 0, 0] },
 ]
 
-// 2×2 grid (portrait mobile / tablette)
+// 2×2 grid (portrait mobile / tablet)
 const PORTRAIT_SLOTS: SlotDef[] = [
   { position: [-1.1, 1.8, 0] },
   { position: [1.1, 1.8, 0] },
@@ -710,7 +709,6 @@ function createFrontTexture(card: CardDef): THREE.CanvasTexture {
 
   // Background
   const bg = ctx.createLinearGradient(0, 0, 0, H)
-  bg.addColorStop(0, '#18102200'); bg.addColorStop(0, '#18102288')
   if (card.id === 'about') {
     bg.addColorStop(0, '#1c1230'); bg.addColorStop(0.55, '#100d1e'); bg.addColorStop(1, '#0a0810')
   } else if (card.id === 'formations') {
@@ -915,7 +913,6 @@ function TarotCard({ def, isActive, isAnyActive, onSelect, dealDelay }: TarotCar
         settledBaseY.current = THREE.MathUtils.lerp(settledBaseY.current, def.position[1], snap)
       }
       groupRef.current.position.y = settledBaseY.current + hoverLift.current * 0.2 + activeLift.current * 0.4
-      groupRef.current.rotation.y = def.rotationY
     }
 
     if (glowLightRef.current) glowLightRef.current.intensity = 0.3 + glowIntensity.current * 2.5
@@ -938,7 +935,7 @@ function TarotCard({ def, isActive, isAnyActive, onSelect, dealDelay }: TarotCar
   })
 
   return (
-    <group ref={groupRef} position={[0, -4, 0]} rotation={[0, def.rotationY, 0]}>
+    <group ref={groupRef} position={[0, -4, 0]}>
       <mesh ref={meshRef} onClick={handleClick} onPointerOver={handlePointerOver} onPointerOut={handlePointerOut} castShadow receiveShadow>
         <boxGeometry args={[2.0, 3.3, 0.02]} />
         <meshStandardMaterial attach="material-0" color="#12091c" roughness={0.8} />
@@ -990,7 +987,6 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
     return defs.map((def, i) => ({
       ...def,
       position: dynamicSlots[slotOrder[i]].position,
-      rotationY: 0,
     }))
   }, [t, slotOrder, dynamicSlots])
 
@@ -1001,20 +997,20 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
   useFrame(() => {
     if (!sceneGroupRef.current) return
 
-    // Détection orientation
+    // Orientation detection
     const portrait = size.height > size.width
     if (portrait !== prevPortrait.current) {
       prevPortrait.current = portrait
       setIsPortrait(portrait)
     }
 
-    // Scale responsive selon orientation
+    // Responsive scale based on orientation
     const s = portrait
-      ? (size.width < 380 ? 0.84 : size.width < 480 ? 0.92 : size.width < 768 ? 0.88 : 0.84)
+      ? (size.width < 480 ? 0.95 : size.width < 768 ? 0.90 : 0.85)
       : (size.width < 380 ? 0.50 : size.width < 480 ? 0.62
           : size.width < 680 ? 0.80 : size.width < 900 ? 0.95 : 1.05)
     sceneGroupRef.current.scale.setScalar(s)
-    // Décale légèrement vers le bas en portrait (header > footer)
+    // Shift slightly down in portrait to account for header > footer
     sceneGroupRef.current.position.y = portrait ? -0.3 : 0
   })
 
