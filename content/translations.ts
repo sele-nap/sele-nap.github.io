@@ -92,7 +92,7 @@ export const translations = {
           ]
         },
         {
-          title: 'Responsable Marketing Numérique',
+          title: 'Marketing Numérique',
           period: 'Janvier – Mars 2020',
           company: 'Studio Gyhel',
           location: 'Annecy, France',
@@ -105,7 +105,7 @@ export const translations = {
         },
         {
           title: 'Business Developer',
-          period: 'Octobre – Novembre 2019',
+          period: 'Octobre – Décembre 2019',
           company: 'DataLumni',
           location: 'Annecy, France',
           highlights: [
@@ -243,7 +243,7 @@ export const translations = {
           ]
         },
         {
-          title: 'Digital Marketing Manager',
+          title: 'Digital Marketing',
           period: 'January – March 2020',
           company: 'Studio Gyhel',
           location: 'Annecy, France',
@@ -256,7 +256,7 @@ export const translations = {
         },
         {
           title: 'Business Developer',
-          period: 'October – November 2019',
+          period: 'October – December 2019',
           company: 'DataLumni',
           location: 'Annecy, France',
           highlights: [
