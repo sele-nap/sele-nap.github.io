@@ -9,7 +9,7 @@ export const translations = {
 
     about: {
       title: 'À propos',
-      intro: "Développeuse full-stack spécialisée en JavaScript et TypeScript, avec une expérience en applications web et outils 3D interactifs, orientée performance, UX et code maintenable.",
+      intro: "Développeuse full-stack spécialisée en JavaScript et TypeScript, avec une expérience en applications web, mobile et outils 3D interactifs. Attachée à la performance, à l'UX et à la qualité du code.",
       skills: {
         atouts: {
           title: 'Atouts',
@@ -137,7 +137,7 @@ export const translations = {
 
     about: {
       title: 'About',
-      intro: "Full-stack developer specializing in JavaScript and TypeScript, with experience in web applications and interactive 3D tools, focused on performance, UX and maintainable code.",
+      intro: "Full-stack developer specializing in JavaScript and TypeScript, with a background in web, mobile, and interactive 3D applications. Driven by performance, clean UX, and maintainable code.",
       skills: {
         atouts: {
           title: 'Strengths',
