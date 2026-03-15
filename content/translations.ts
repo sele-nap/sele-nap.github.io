@@ -202,7 +202,7 @@ export const translations = {
           highlights: [
             'Designed and developed interactive digital systems in virtual and augmented reality using Unity',
             'Focused on UX/UI design, interactive content creation, and transmedia storytelling',
-            "Master's thesis: 'The Role of Images in Animal Exploitation: Perceptions from L214 Protests'",
+            "Master's thesis: 'The role of imagery in animal exploitation: Perceptions from L214 protests against animal exploitation.'",
           ]
         },
         {
