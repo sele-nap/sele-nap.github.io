@@ -329,11 +329,11 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
   if (card.id === 'about') {
     // ── Large crescent + moth + constellation ──
     // Outer rings
-    ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 20
-    ctx.strokeStyle = `${card.accentColor}55`; ctx.lineWidth = 1.5
+    ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 28
+    ctx.strokeStyle = `${card.accentColor}aa`; ctx.lineWidth = 2.2
     ctx.beginPath(); ctx.arc(cx, cy, 132, 0, Math.PI * 2); ctx.stroke()
     ctx.restore()
-    ctx.strokeStyle = `${card.accentColor}28`; ctx.lineWidth = 1
+    ctx.strokeStyle = `${card.accentColor}66`; ctx.lineWidth = 1
     ctx.beginPath(); ctx.arc(cx, cy, 118, 0, Math.PI * 2); ctx.stroke()
     // Dot ring
     for (let a = 0; a < Math.PI * 2; a += Math.PI / 10) {
@@ -387,11 +387,11 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
 
   } else if (card.id === 'formations') {
     // ── Hourglass + constellation + flowing stars ──
-    ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 18
-    ctx.strokeStyle = `${card.accentColor}50`; ctx.lineWidth = 1.5
+    ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 28
+    ctx.strokeStyle = `${card.accentColor}aa`; ctx.lineWidth = 2.2
     ctx.beginPath(); ctx.arc(cx, cy, 135, 0, Math.PI * 2); ctx.stroke()
     ctx.restore()
-    ctx.strokeStyle = `${card.accentColor}25`; ctx.lineWidth = 1
+    ctx.strokeStyle = `${card.accentColor}66`; ctx.lineWidth = 1
     ctx.beginPath(); ctx.arc(cx, cy, 120, 0, Math.PI * 2); ctx.stroke()
 
     // Dot ring
@@ -509,8 +509,8 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
   } else if (card.id === 'contact') {
     // ── Wax seal + spider web + botanical wreath + mushrooms ──
     // Outer ring
-    ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 22
-    ctx.strokeStyle = `${card.accentColor}52`; ctx.lineWidth = 1.5
+    ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 28
+    ctx.strokeStyle = `${card.accentColor}aa`; ctx.lineWidth = 2.2
     ctx.beginPath(); ctx.arc(cx, cy, 132, 0, Math.PI * 2); ctx.stroke()
     ctx.restore()
 
@@ -598,11 +598,11 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
   } else if (card.id === 'experiences') {
     // ── Compass rose + constellation ──
     // Outer rings
-    ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 20
-    ctx.strokeStyle = `${card.accentColor}50`; ctx.lineWidth = 1.5
+    ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 28
+    ctx.strokeStyle = `${card.accentColor}aa`; ctx.lineWidth = 2.2
     ctx.beginPath(); ctx.arc(cx, cy, 132, 0, Math.PI * 2); ctx.stroke()
     ctx.restore()
-    ctx.strokeStyle = `${card.accentColor}25`; ctx.lineWidth = 1
+    ctx.strokeStyle = `${card.accentColor}66`; ctx.lineWidth = 1
     ctx.beginPath(); ctx.arc(cx, cy, 118, 0, Math.PI * 2); ctx.stroke()
 
     // Dot ring
@@ -849,6 +849,7 @@ function TarotCard({ def, isActive, isAnyActive, onSelect, dealDelay }: TarotCar
   const glowLightRef = useRef<PointLight>(null)
   const materialFrontRef = useRef<THREE.MeshStandardMaterial>(null)
   const materialBackRef = useRef<THREE.MeshStandardMaterial>(null)
+  const glowBorderRef = useRef<THREE.MeshBasicMaterial>(null)
 
   const [isHovered, setIsHovered] = useState(false)
 
@@ -863,11 +864,37 @@ function TarotCard({ def, isActive, isAnyActive, onSelect, dealDelay }: TarotCar
 
   const backTexture = useMemo(() => createBackTexture(), [])
   const frontTexture = useMemo(() => createFrontTexture(def), [def])
+  const glowTexture = useMemo(() => {
+    const canvas = document.createElement('canvas')
+    canvas.width = 256; canvas.height = 256
+    const ctx2d = canvas.getContext('2d')!
+    // Plane is 3.0 × 4.6 units, card is 2.0 × 3.3 units
+    // Map card rect onto the 256×256 canvas
+    const ratioX = 2.0 / 3.0   // card width / plane width
+    const ratioY = 3.3 / 4.6   // card height / plane height
+    const cw = 256 * ratioX    // card width in canvas px (~171)
+    const ch = 256 * ratioY    // card height in canvas px (~183)
+    const cx = (256 - cw) / 2
+    const cy = (256 - ch) / 2
+    // Draw the card rect with a glowing shadow, then punch out the interior
+    ctx2d.clearRect(0, 0, 256, 256)
+    ctx2d.shadowColor = def.accentColor
+    ctx2d.shadowBlur = 14
+    ctx2d.fillStyle = def.accentColor + 'ff'
+    ctx2d.fillRect(cx, cy, cw, ch)
+    // Erase the solid filled rect — leaves only the outer shadow/glow
+    ctx2d.globalCompositeOperation = 'destination-out'
+    ctx2d.shadowBlur = 0
+    ctx2d.fillStyle = 'rgba(0,0,0,1)'
+    ctx2d.fillRect(cx, cy, cw, ch)
+    return new THREE.CanvasTexture(canvas)
+  }, [def.accentColor])
 
   useEffect(() => {
     return () => {
       frontTexture.dispose()
       backTexture.dispose()
+      glowTexture.dispose()
       document.body.style.cursor = 'auto'
     }
   }, [frontTexture, backTexture])
@@ -916,6 +943,7 @@ function TarotCard({ def, isActive, isAnyActive, onSelect, dealDelay }: TarotCar
     }
 
     if (glowLightRef.current) glowLightRef.current.intensity = 0.3 + glowIntensity.current * 2.5
+    if (glowBorderRef.current) glowBorderRef.current.opacity = hoverLift.current * 0.75
 
     if (materialFrontRef.current) {
       materialFrontRef.current.emissiveIntensity = 0.75 + glowIntensity.current * 0.5
@@ -936,6 +964,10 @@ function TarotCard({ def, isActive, isAnyActive, onSelect, dealDelay }: TarotCar
 
   return (
     <group ref={groupRef} position={[0, -4, 0]}>
+      <mesh position={[0, 0, 0.02]}>
+        <planeGeometry args={[3.0, 4.6]} />
+        <meshBasicMaterial ref={glowBorderRef} map={glowTexture} transparent opacity={0} blending={THREE.AdditiveBlending} depthWrite={false} />
+      </mesh>
       <mesh ref={meshRef} onClick={handleClick} onPointerOver={handlePointerOver} onPointerOut={handlePointerOut} castShadow receiveShadow>
         <boxGeometry args={[2.0, 3.3, 0.02]} />
         <meshStandardMaterial attach="material-0" color="#12091c" roughness={0.8} />
