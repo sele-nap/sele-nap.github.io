@@ -92,7 +92,7 @@ export const translations = {
           ]
         },
         {
-          title: 'Marketing Numérique',
+          title: 'Chargée Marketing Digital',
           period: 'Janvier – Mars 2020',
           company: 'Studio Gyhel',
           location: 'Annecy, France',
@@ -243,7 +243,7 @@ export const translations = {
           ]
         },
         {
-          title: 'Digital Marketing',
+          title: 'Digital Marketing Specialist',
           period: 'January – March 2020',
           company: 'Studio Gyhel',
           location: 'Annecy, France',
