@@ -195,7 +195,7 @@ export const translations = {
           ]
         },
         {
-          title: 'Master in Digital Creation · Hypermedia & Smart Spaces',
+          title: 'Master in Digital Design - Hypermedia and Intelligent Environment',
           period: '2017 – 2020',
           school: 'University of Savoy Mont Blanc',
           location: 'Chambéry, France',
