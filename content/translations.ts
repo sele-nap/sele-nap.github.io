@@ -123,7 +123,7 @@ export const translations = {
           ]
         },
         {
-          title: 'Stage en Communication',
+          title: 'Assistante Éditoriale & Communication',
           period: 'Mai – Juin 2016',
           company: 'Le Léopard Masqué',
           location: 'Paris, France',
@@ -274,7 +274,7 @@ export const translations = {
           ]
         },
         {
-          title: 'Communications Intern',
+          title: 'Editorial & Communications Assistant',
           period: 'May – June 2016',
           company: 'Le Léopard Masqué',
           location: 'Paris, France',
