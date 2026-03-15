@@ -14,7 +14,6 @@ interface CardDef {
 
 type SlotDef = { position: [number, number, number] }
 
-// 4 cards in a row (landscape / desktop)
 const LANDSCAPE_SLOTS: SlotDef[] = [
   { position: [-3.2, 0, 0] },
   { position: [-1.07, 0, 0] },
@@ -22,7 +21,6 @@ const LANDSCAPE_SLOTS: SlotDef[] = [
   { position: [3.2, 0, 0] },
 ]
 
-// 2×2 grid (portrait mobile / tablet)
 const PORTRAIT_SLOTS: SlotDef[] = [
   { position: [-1.15, 2.0, 0] },
   { position: [1.15, 2.0, 0] },
@@ -30,7 +28,23 @@ const PORTRAIT_SLOTS: SlotDef[] = [
   { position: [1.15, -2.0, 0] },
 ]
 
-// ─── Drawing helpers ──────────────────────────────────────────────────────────
+const CARD_CONFIGS = [
+  { id: 'about',       symbol: '☽', accentColor: '#6b4d7a' },
+  { id: 'formations',  symbol: '✦', accentColor: '#d4a574' },
+  { id: 'experiences', symbol: '✵', accentColor: '#8099b8' },
+  { id: 'contact',     symbol: '✉', accentColor: '#7a9578' },
+] as const
+
+const CARD_ROMAN: Record<string, string> = {
+  about: 'I', formations: 'II', experiences: 'III', contact: 'IV',
+}
+
+const CARD_SUBTITLES: Record<string, string> = {
+  about: '☽  the self  ☽',
+  formations: '✦  the path  ✦',
+  experiences: '✵  the journey  ✵',
+  contact: '✉  the thread  ✉',
+}
 
 function drawLeafShape(ctx: CanvasRenderingContext2D, size: number) {
   ctx.beginPath()
@@ -149,7 +163,6 @@ function drawSpiderWeb(ctx: CanvasRenderingContext2D, cx: number, cy: number, r:
     }
     ctx.stroke()
   }
-  // Spider
   ctx.fillStyle = color; ctx.globalAlpha = 0.82
   ctx.beginPath(); ctx.arc(cx + r * 0.42, cy + r * 0.28, r * 0.065, 0, Math.PI * 2); ctx.fill()
   ctx.restore()
@@ -222,20 +235,16 @@ function drawOrnamentalCorner(ctx: CanvasRenderingContext2D, x: number, y: numbe
   ctx.fillText('✦', 8, 8); ctx.restore()
 }
 
-// ─── Back texture ─────────────────────────────────────────────────────────────
-
 function createBackTexture(): THREE.CanvasTexture {
   const W = 512, H = 896
   const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H
   const ctx = canvas.getContext('2d')!
 
-  // Background
   const bg = ctx.createRadialGradient(W / 2, H * 0.42, 55, W / 2, H / 2, 460)
   bg.addColorStop(0, '#1e1430'); bg.addColorStop(0.4, '#130f20')
   bg.addColorStop(0.8, '#0a0810'); bg.addColorStop(1, '#06050a')
   ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H)
 
-  // Crosshatch
   ctx.save(); ctx.strokeStyle = 'rgba(107,77,122,0.07)'; ctx.lineWidth = 0.8
   for (let i = -H; i < W + H; i += 30) {
     ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i + H, H); ctx.stroke()
@@ -245,19 +254,15 @@ function createBackTexture(): THREE.CanvasTexture {
 
   drawScatteredStars(ctx, W, H, '#d4a574', 120, 45)
 
-  // Borders
   ctx.strokeStyle = '#6b4d7a'; ctx.lineWidth = 5; ctx.strokeRect(10, 10, W - 20, H - 20)
   ctx.strokeStyle = '#d4a574'; ctx.lineWidth = 2; ctx.strokeRect(42, 42, W - 84, H - 84)
   ctx.strokeStyle = 'rgba(107,77,122,0.4)'; ctx.lineWidth = 1; ctx.strokeRect(52, 52, W - 104, H - 104)
 
-  // Vine border between outer and inner frame
   drawVineBorder(ctx, W, H, 26, '#7a9578')
 
-  // Corner ornaments
   const cPos = [[52, 52, 1, 1], [W - 52, 52, -1, 1], [W - 52, H - 52, -1, -1], [52, H - 52, 1, -1]] as [number, number, number, number][]
   cPos.forEach(([x, y, sx, sy]) => drawOrnamentalCorner(ctx, x, y, sx, sy, '#d4a574'))
 
-  // Mushrooms in corners
   ctx.save(); ctx.globalAlpha = 0.82
   drawMushroom(ctx, 78, H / 2 - 40, 22, '#8b4a6b')
   drawMushroom(ctx, 65, H / 2 + 10, 18, '#a05878')
@@ -265,24 +270,19 @@ function createBackTexture(): THREE.CanvasTexture {
   drawMushroom(ctx, W - 65, H / 2 + 10, 18, '#a05878')
   ctx.restore()
 
-  // Crystals in top corners
   ctx.save(); ctx.globalAlpha = 0.92
   drawCrystalCluster(ctx, 78, 105, '#9b7ab8', 0.85)
   drawCrystalCluster(ctx, W - 78, 105, '#9b7ab8', 0.85)
   ctx.restore()
 
-  // Moon phases top & bottom
   drawMoonPhases(ctx, W / 2, 72, '#d4a574', 9)
   drawMoonPhases(ctx, W / 2, H - 72, '#d4a574', 9)
 
-  // Horizontal dividers
   ctx.strokeStyle = 'rgba(212,165,116,0.2)'; ctx.lineWidth = 1
   ctx.beginPath(); ctx.moveTo(58, 108); ctx.lineTo(W - 58, 108); ctx.stroke()
   ctx.beginPath(); ctx.moveTo(58, H - 108); ctx.lineTo(W - 58, H - 108); ctx.stroke()
 
-  // Central medallion
   const mcx = W / 2, mcy = H / 2
-  // Dot ring
   for (let a = 0; a < Math.PI * 2; a += Math.PI / 13) {
     const dx = mcx + Math.cos(a) * 130, dy = mcy + Math.sin(a) * 130
     ctx.fillStyle = 'rgba(212,165,116,0.3)'; ctx.beginPath(); ctx.arc(dx, dy, 2.5, 0, Math.PI * 2); ctx.fill()
@@ -293,21 +293,18 @@ function createBackTexture(): THREE.CanvasTexture {
   ctx.restore()
   ctx.strokeStyle = 'rgba(107,77,122,0.4)'; ctx.lineWidth = 1
   ctx.beginPath(); ctx.arc(mcx, mcy, 105, 0, Math.PI * 2); ctx.stroke()
-  // Large crescent moon
   ctx.save(); ctx.shadowColor = '#d4a574'; ctx.shadowBlur = 45
   ctx.fillStyle = '#d4a574'; ctx.globalAlpha = 0.9
   ctx.beginPath(); ctx.arc(mcx, mcy, 76, 0, Math.PI * 2); ctx.fill()
   ctx.restore()
   ctx.fillStyle = '#130f20'
   ctx.beginPath(); ctx.arc(mcx + 30, mcy - 13, 68, 0, Math.PI * 2); ctx.fill()
-  // Stars near crescent
   ;[{ x: mcx + 58, y: mcy - 78, s: 10 }, { x: mcx - 44, y: mcy - 88, s: 8 }, { x: mcx + 82, y: mcy + 24, s: 9 }, { x: mcx - 60, y: mcy + 40, s: 7 }, { x: mcx + 38, y: mcy + 82, s: 8 }].forEach(st => {
     ctx.fillStyle = '#d4a574'; ctx.globalAlpha = 0.44
     ctx.font = `${st.s}px serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
     ctx.fillText('✦', st.x, st.y); ctx.globalAlpha = 1
   })
 
-  // Side dots
   for (let y2 = 125; y2 < H - 125; y2 += 52) {
     ctx.fillStyle = 'rgba(107,77,122,0.3)'
     ctx.beginPath(); ctx.arc(58, y2, 1.8, 0, Math.PI * 2); ctx.fill()
@@ -321,42 +318,32 @@ function createBackTexture(): THREE.CanvasTexture {
   const tex = new THREE.CanvasTexture(canvas); tex.needsUpdate = true; return tex
 }
 
-// ─── Front texture ────────────────────────────────────────────────────────────
-
 function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: number, card: CardDef) {
   const cx = W / 2, cy = H * 0.375
 
   if (card.id === 'about') {
-    // ── Large crescent + moth + constellation ──
-    // Outer rings
     ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 28
     ctx.strokeStyle = `${card.accentColor}aa`; ctx.lineWidth = 2.2
     ctx.beginPath(); ctx.arc(cx, cy, 132, 0, Math.PI * 2); ctx.stroke()
     ctx.restore()
     ctx.strokeStyle = `${card.accentColor}66`; ctx.lineWidth = 1
     ctx.beginPath(); ctx.arc(cx, cy, 118, 0, Math.PI * 2); ctx.stroke()
-    // Dot ring
     for (let a = 0; a < Math.PI * 2; a += Math.PI / 10) {
       const dx = cx + Math.cos(a) * 142, dy = cy + Math.sin(a) * 142
       ctx.fillStyle = card.accentColor; ctx.globalAlpha = 0.2 + Math.sin(a * 4) * 0.1
       ctx.beginPath(); ctx.arc(dx, dy, 2.5, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1
     }
-    // Crescent moon
     ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 50
     ctx.fillStyle = card.accentColor; ctx.globalAlpha = 0.88
     ctx.beginPath(); ctx.arc(cx, cy, 82, 0, Math.PI * 2); ctx.fill()
     ctx.restore()
     ctx.fillStyle = '#0f0c18'
     ctx.beginPath(); ctx.arc(cx + 36, cy - 16, 74, 0, Math.PI * 2); ctx.fill()
-    // Moon face (subtle)
     ctx.save()
     ctx.strokeStyle = `${card.accentColor}60`; ctx.lineWidth = 0.8; ctx.globalAlpha = 0.5
-    // Eye closed
     ctx.beginPath(); ctx.moveTo(cx - 30, cy - 8); ctx.bezierCurveTo(cx - 24, cy - 12, cx - 18, cy - 12, cx - 12, cy - 8); ctx.stroke()
-    // Smile
     ctx.beginPath(); ctx.arc(cx - 22, cy + 8, 10, 0.1, Math.PI - 0.1); ctx.stroke()
     ctx.restore()
-    // Constellation
     const cStars = [{ x: cx + 60, y: cy - 82 }, { x: cx - 50, y: cy - 96 }, { x: cx + 90, y: cy - 28 }, { x: cx - 80, y: cy + 42 }, { x: cx + 45, y: cy + 96 }, { x: cx - 35, y: cy + 108 }]
     ctx.strokeStyle = `${card.accentColor}25`; ctx.lineWidth = 0.7
     ctx.beginPath(); cStars.forEach((s, i) => i === 0 ? ctx.moveTo(s.x, s.y) : ctx.lineTo(s.x, s.y)); ctx.stroke()
@@ -366,7 +353,6 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
       ctx.beginPath(); ctx.arc(s.x, s.y, 3, 0, Math.PI * 2); ctx.fill()
       ctx.restore()
     })
-    // Mushroom cluster below moon
     ctx.save(); ctx.globalAlpha = 0.88
     drawMushroom(ctx, cx, cy + 148, 40, '#9b4a72')
     drawMushroom(ctx, cx - 52, cy + 160, 28, '#8b4a6b')
@@ -374,19 +360,16 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
     drawMushroom(ctx, cx - 26, cy + 170, 18, '#c07898')
     drawMushroom(ctx, cx + 28, cy + 156, 20, '#7a3a5a')
     ctx.restore()
-    // Lavender sprigs
     ctx.save(); ctx.globalAlpha = 0.62
     drawSprig(ctx, cx - 152, cy + 20, 0.3, card.accentColor, 1.2)
     drawSprig(ctx, cx + 152, cy + 20, Math.PI - 0.3, card.accentColor, 1.2)
     ctx.restore()
-    // Crystal clusters in upper corners of illustration
     ctx.save(); ctx.globalAlpha = 0.88
     drawCrystalCluster(ctx, cx - 138, cy - 88, card.accentColor, 0.72)
     drawCrystalCluster(ctx, cx + 138, cy - 88, card.accentColor, 0.72)
     ctx.restore()
 
   } else if (card.id === 'formations') {
-    // ── Hourglass + constellation + flowing stars ──
     ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 28
     ctx.strokeStyle = `${card.accentColor}aa`; ctx.lineWidth = 2.2
     ctx.beginPath(); ctx.arc(cx, cy, 135, 0, Math.PI * 2); ctx.stroke()
@@ -394,7 +377,6 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
     ctx.strokeStyle = `${card.accentColor}66`; ctx.lineWidth = 1
     ctx.beginPath(); ctx.arc(cx, cy, 120, 0, Math.PI * 2); ctx.stroke()
 
-    // Dot ring
     for (let a = 0; a < Math.PI * 2; a += Math.PI / 14) {
       const dx = cx + Math.cos(a) * 128, dy = cy + Math.sin(a) * 128
       ctx.fillStyle = card.accentColor; ctx.globalAlpha = 0.14 + Math.sin(a * 3) * 0.07
@@ -402,7 +384,6 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
     }
     ctx.globalAlpha = 1
 
-    // Hourglass shape
     const hgHalfH = 86, hgHalfW = 56, hgWaist = 9
     const hgTop = cy - hgHalfH, hgBot = cy + hgHalfH
     const pathHourglass = () => {
@@ -417,26 +398,22 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
       ctx.closePath()
     }
 
-    // Fill
     ctx.save()
     pathHourglass()
     ctx.fillStyle = 'rgba(16, 10, 4, 0.9)'; ctx.fill()
     ctx.restore()
 
-    // Stroke with glow
     ctx.save()
     ctx.shadowColor = card.accentColor; ctx.shadowBlur = 14
     ctx.strokeStyle = card.accentColor; ctx.lineWidth = 2.2; ctx.globalAlpha = 0.92
     pathHourglass(); ctx.stroke()
     ctx.restore()
 
-    // Top and bottom caps
     ctx.fillStyle = card.accentColor; ctx.globalAlpha = 0.88
     ctx.fillRect(cx - hgHalfW - 3, hgTop - 10, hgHalfW * 2 + 6, 10)
     ctx.fillRect(cx - hgHalfW - 3, hgBot, hgHalfW * 2 + 6, 10)
     ctx.globalAlpha = 1
 
-    // Stars/sand in top bulb (remaining)
     for (let i = 0; i < 32; i++) {
       const px = cx + Math.sin(i * 2.39) * (hgHalfW * 0.72 * (1 - i / 32 * 0.45))
       const py = hgTop + 18 + (i / 32) * (hgHalfH - 26)
@@ -445,13 +422,11 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
       ctx.beginPath(); ctx.arc(px, py, 0.9 + Math.cos(i * 1.7) * 0.5, 0, Math.PI * 2); ctx.fill()
     }
 
-    // Stars trickling through waist
     for (let i = 0; i < 4; i++) {
       ctx.fillStyle = '#fff8e0'; ctx.globalAlpha = 0.7 - i * 0.15
       ctx.beginPath(); ctx.arc(cx + (i % 2 === 0 ? 1.5 : -1.5), cy - 8 + i * 5, 1.4, 0, Math.PI * 2); ctx.fill()
     }
 
-    // Stars collected in bottom bulb
     for (let i = 0; i < 16; i++) {
       const spread = hgHalfW * (0.38 + (i / 16) * 0.32)
       const px = cx + Math.sin(i * 1.87) * spread
@@ -462,14 +437,12 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
     }
     ctx.globalAlpha = 1
 
-    // Faint glow at waist
     ctx.save()
     ctx.shadowColor = card.accentColor; ctx.shadowBlur = 22
     ctx.fillStyle = card.accentColor; ctx.globalAlpha = 0.18
     ctx.beginPath(); ctx.arc(cx, cy, 12, 0, Math.PI * 2); ctx.fill()
     ctx.restore()
 
-    // Constellation stars around hourglass
     const cStars = [
       { x: cx + 78, y: cy - 96 }, { x: cx - 82, y: cy - 82 },
       { x: cx + 112, y: cy + 12 }, { x: cx - 108, y: cy + 26 },
@@ -485,7 +458,6 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
       ctx.restore()
     })
 
-    // Scattered accent stars
     ;[{ x: cx + 52, y: cy - 118 }, { x: cx - 48, y: cy - 110 }, { x: cx + 90, y: cy - 58 },
       { x: cx - 86, y: cy - 46 }, { x: cx + 94, y: cy + 56 }, { x: cx - 90, y: cy + 68 }
     ].forEach((s, i) => {
@@ -494,32 +466,26 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
       ctx.fillText(i % 2 ? '✧' : '✦', s.x, s.y); ctx.globalAlpha = 1
     })
 
-    // Crystal clusters flanking
     ctx.save(); ctx.globalAlpha = 0.78
     drawCrystalCluster(ctx, cx - 126, cy - 44, card.accentColor, 0.68)
     drawCrystalCluster(ctx, cx + 126, cy - 44, card.accentColor, 0.68)
     ctx.restore()
 
-    // Herb sprigs
     ctx.save(); ctx.globalAlpha = 0.55
     drawSprig(ctx, cx + 140, cy + 18, Math.PI - 0.25, card.accentColor, 1.05)
     drawSprig(ctx, cx - 140, cy + 18, 0.25, card.accentColor, 1.05)
     ctx.restore()
 
   } else if (card.id === 'contact') {
-    // ── Wax seal + spider web + botanical wreath + mushrooms ──
-    // Outer ring
     ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 28
     ctx.strokeStyle = `${card.accentColor}aa`; ctx.lineWidth = 2.2
     ctx.beginPath(); ctx.arc(cx, cy, 132, 0, Math.PI * 2); ctx.stroke()
     ctx.restore()
 
-    // Spider web top-right
     ctx.save(); ctx.globalAlpha = 1.0
     drawSpiderWeb(ctx, cx + 108, cy - 98, 72, card.accentColor)
     ctx.restore()
 
-    // Dense botanical wreath
     for (let a = 0; a < Math.PI * 2; a += Math.PI / 10) {
       const lx = cx + Math.cos(a) * 112, ly = cy + Math.sin(a) * 112
       ctx.save(); ctx.translate(lx, ly); ctx.rotate(a + Math.PI / 2)
@@ -538,7 +504,6 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
       ctx.bezierCurveTo(3.5, -9, 4, -3, 0, 0); ctx.fill(); ctx.restore()
     }
 
-    // Wax seal
     ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 40
     ctx.fillStyle = '#111e14'; ctx.globalAlpha = 0.95
     ctx.beginPath(); ctx.arc(cx, cy, 80, 0, Math.PI * 2); ctx.fill()
@@ -548,10 +513,8 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
     ctx.beginPath(); ctx.arc(cx, cy, 68, 0, Math.PI * 2); ctx.stroke()
     ctx.restore()
 
-    // Pentagram in seal
     drawPentagram(ctx, cx, cy, 55, card.accentColor)
 
-    // Seal radial lines
     for (let a = 0; a < Math.PI * 2; a += Math.PI / 9) {
       const ix = cx + Math.cos(a) * 42, iy = cy + Math.sin(a) * 42
       const ox = cx + Math.cos(a) * 64, oy = cy + Math.sin(a) * 64
@@ -559,11 +522,9 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
       ctx.beginPath(); ctx.moveTo(ix, iy); ctx.lineTo(ox, oy); ctx.stroke(); ctx.globalAlpha = 1
     }
 
-    // Quill pen top-left area
     ctx.save()
     ctx.strokeStyle = card.accentColor; ctx.fillStyle = card.accentColor
     ctx.lineWidth = 1.2; ctx.globalAlpha = 0.55
-    // Quill
     const qx = cx - 110, qy = cy - 90
     ctx.save(); ctx.translate(qx, qy); ctx.rotate(0.6)
     ctx.beginPath(); ctx.moveTo(0, -38)
@@ -574,12 +535,10 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
     ctx.fillStyle = '#1a2f1e'; ctx.globalAlpha = 0.6
     ctx.beginPath(); ctx.moveTo(0, -38); ctx.lineTo(0, 8)
     ctx.bezierCurveTo(-6, 2, -10, -6, -8, 0); ctx.fill()
-    // Quill nib
     ctx.fillStyle = '#2a2010'; ctx.globalAlpha = 0.8
     ctx.beginPath(); ctx.moveTo(0, 8); ctx.lineTo(-3, 22); ctx.lineTo(0, 20); ctx.lineTo(3, 22); ctx.closePath(); ctx.fill()
     ctx.restore(); ctx.restore()
 
-    // Herb sprigs around seal
     ctx.save(); ctx.globalAlpha = 0.65
     drawSprig(ctx, cx - 150, cy + 18, 0.42, card.accentColor, 1.2)
     drawSprig(ctx, cx + 150, cy + 18, Math.PI - 0.42, card.accentColor, 1.2)
@@ -587,7 +546,6 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
     drawSprig(ctx, cx + 125, cy - 75, Math.PI - 0.2, card.accentColor, 0.85)
     ctx.restore()
 
-    // Mushroom cluster bottom
     ctx.save(); ctx.globalAlpha = 0.85
     drawMushroom(ctx, cx - 105, cy + 148, 22, '#4a8060')
     drawMushroom(ctx, cx - 88, cy + 142, 16, '#5a9070')
@@ -596,8 +554,6 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
     ctx.restore()
 
   } else if (card.id === 'experiences') {
-    // ── Compass rose + constellation ──
-    // Outer rings
     ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 28
     ctx.strokeStyle = `${card.accentColor}aa`; ctx.lineWidth = 2.2
     ctx.beginPath(); ctx.arc(cx, cy, 132, 0, Math.PI * 2); ctx.stroke()
@@ -605,7 +561,6 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
     ctx.strokeStyle = `${card.accentColor}66`; ctx.lineWidth = 1
     ctx.beginPath(); ctx.arc(cx, cy, 118, 0, Math.PI * 2); ctx.stroke()
 
-    // Dot ring
     for (let a = 0; a < Math.PI * 2; a += Math.PI / 12) {
       const dx = cx + Math.cos(a) * 126, dy = cy + Math.sin(a) * 126
       ctx.fillStyle = card.accentColor; ctx.globalAlpha = 0.15 + Math.sin(a * 4) * 0.08
@@ -613,13 +568,11 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
     }
     ctx.globalAlpha = 1
 
-    // Inner circle background
     ctx.fillStyle = 'rgba(10, 14, 26, 0.85)'
     ctx.beginPath(); ctx.arc(cx, cy, 78, 0, Math.PI * 2); ctx.fill()
     ctx.strokeStyle = `${card.accentColor}70`; ctx.lineWidth = 1.5
     ctx.beginPath(); ctx.arc(cx, cy, 78, 0, Math.PI * 2); ctx.stroke()
 
-    // Intercardinal lines
     ;[-Math.PI * 3 / 4, -Math.PI / 4, Math.PI / 4, Math.PI * 3 / 4].forEach(angle => {
       ctx.strokeStyle = `${card.accentColor}55`; ctx.lineWidth = 1; ctx.globalAlpha = 0.55
       ctx.beginPath()
@@ -628,7 +581,6 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
       ctx.stroke(); ctx.globalAlpha = 1
     })
 
-    // Cardinal arms (N, S, E, W)
     ;[[-Math.PI / 2, 72], [Math.PI / 2, 72], [0, 66], [Math.PI, 66]].forEach(([angle, len]) => {
       ctx.save()
       ctx.shadowColor = card.accentColor; ctx.shadowBlur = 10
@@ -639,7 +591,6 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
       ctx.stroke(); ctx.restore()
     })
 
-    // Diamond points at N, S, E, W
     const drawDiamond = (dx: number, dy: number, size: number) => {
       ctx.save()
       ctx.shadowColor = card.accentColor; ctx.shadowBlur = 16
@@ -656,14 +607,12 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
     drawDiamond(cx + 66, cy, 12)
     drawDiamond(cx - 66, cy, 12)
 
-    // Center glow dot
     ctx.save()
     ctx.shadowColor = '#ffffff'; ctx.shadowBlur = 22
     ctx.fillStyle = '#ffffff'; ctx.globalAlpha = 0.9
     ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2); ctx.fill()
     ctx.restore()
 
-    // Constellation stars
     const cStars = [
       { x: cx + 72, y: cy - 92 }, { x: cx - 68, y: cy - 96 },
       { x: cx + 110, y: cy + 16 }, { x: cx - 106, y: cy + 28 },
@@ -679,7 +628,6 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
       ctx.restore()
     })
 
-    // Accent stars
     ;[{ x: cx + 50, y: cy - 118 }, { x: cx - 46, y: cy - 112 }, { x: cx + 90, y: cy - 58 },
       { x: cx - 86, y: cy - 48 }, { x: cx + 94, y: cy + 58 }, { x: cx - 90, y: cy + 72 }
     ].forEach((s, i) => {
@@ -688,13 +636,11 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
       ctx.fillText(i % 2 ? '✧' : '✦', s.x, s.y); ctx.globalAlpha = 1
     })
 
-    // Crystal clusters flanking
     ctx.save(); ctx.globalAlpha = 0.72
     drawCrystalCluster(ctx, cx - 128, cy - 44, card.accentColor, 0.68)
     drawCrystalCluster(ctx, cx + 128, cy - 44, card.accentColor, 0.68)
     ctx.restore()
 
-    // Herb sprigs
     ctx.save(); ctx.globalAlpha = 0.55
     drawSprig(ctx, cx + 142, cy + 20, Math.PI - 0.28, card.accentColor, 1.05)
     drawSprig(ctx, cx - 142, cy + 20, 0.28, card.accentColor, 1.05)
@@ -707,7 +653,6 @@ function createFrontTexture(card: CardDef): THREE.CanvasTexture {
   const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H
   const ctx = canvas.getContext('2d')!
 
-  // Background
   const bg = ctx.createLinearGradient(0, 0, 0, H)
   if (card.id === 'about') {
     bg.addColorStop(0, '#1c1230'); bg.addColorStop(0.55, '#100d1e'); bg.addColorStop(1, '#0a0810')
@@ -720,29 +665,24 @@ function createFrontTexture(card: CardDef): THREE.CanvasTexture {
   }
   ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H)
 
-  // Side gradient
   const sg = ctx.createLinearGradient(0, 0, W, 0)
   sg.addColorStop(0, `${card.accentColor}22`); sg.addColorStop(0.5, 'transparent'); sg.addColorStop(1, `${card.accentColor}22`)
   ctx.fillStyle = sg; ctx.fillRect(0, 0, W, H)
 
   drawScatteredStars(ctx, W, H, card.accentColor, 90, 55)
 
-  // Borders
   ctx.strokeStyle = card.accentColor; ctx.lineWidth = 5; ctx.strokeRect(10, 10, W - 20, H - 20)
   ctx.strokeStyle = 'rgba(255,255,255,0.1)'; ctx.lineWidth = 1; ctx.strokeRect(22, 22, W - 44, H - 44)
   ctx.strokeStyle = card.accentColor; ctx.lineWidth = 2; ctx.strokeRect(42, 42, W - 84, H - 84)
   ctx.strokeStyle = `${card.accentColor}33`; ctx.lineWidth = 1; ctx.strokeRect(52, 52, W - 104, H - 104)
 
-  // Dense vine border
   drawVineBorder(ctx, W, H, 32, card.accentColor)
 
-  // Corner ornaments
   drawOrnamentalCorner(ctx, 52, 52, 1, 1, card.accentColor)
   drawOrnamentalCorner(ctx, W - 52, 52, -1, 1, card.accentColor)
   drawOrnamentalCorner(ctx, W - 52, H - 52, -1, -1, card.accentColor)
   drawOrnamentalCorner(ctx, 52, H - 52, 1, -1, card.accentColor)
 
-  // Mushrooms in bottom corners of card
   ctx.save(); ctx.globalAlpha = 0.5
   if (card.id === 'about') {
     drawMushroom(ctx, 72, H - 170, 20, '#8b4a6b')
@@ -752,45 +692,35 @@ function createFrontTexture(card: CardDef): THREE.CanvasTexture {
   }
   ctx.restore()
 
-  // Roman numeral
-  const romanNumerals = ['I', 'II', 'III', 'IV']
-  const romanIndex = ['about', 'formations', 'experiences', 'contact'].indexOf(card.id)
   ctx.fillStyle = card.accentColor; ctx.globalAlpha = 1.0
   ctx.font = '700 17px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
-  ctx.fillText(romanNumerals[romanIndex] ?? 'I', W / 2, 56); ctx.globalAlpha = 1
+  ctx.fillText(CARD_ROMAN[card.id] ?? 'I', W / 2, 56); ctx.globalAlpha = 1
 
-  // Moon phases strip
   drawMoonPhases(ctx, W / 2, 78, card.accentColor, 6)
 
-  // Top divider with ornament
   ctx.strokeStyle = card.accentColor; ctx.lineWidth = 1.2; ctx.globalAlpha = 0.85
   ctx.beginPath(); ctx.moveTo(60, 102); ctx.lineTo(W / 2 - 22, 102); ctx.stroke()
   ctx.beginPath(); ctx.moveTo(W / 2 + 22, 102); ctx.lineTo(W - 60, 102); ctx.stroke()
   ctx.globalAlpha = 1; ctx.fillStyle = card.accentColor; ctx.font = '14px serif'; ctx.textAlign = 'center'
   ctx.fillText('◆', W / 2, 102)
 
-  // Ghost symbol background
   ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 65
   ctx.fillStyle = card.accentColor; ctx.globalAlpha = 0.08
   ctx.font = 'bold 240px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
   ctx.fillText(card.symbol, W / 2, H * 0.375); ctx.restore()
 
-  // Card-specific illustration
   drawCardIllustration(ctx, W, H, card)
 
-  // Middle divider
   ctx.strokeStyle = card.accentColor; ctx.lineWidth = 1.2; ctx.globalAlpha = 0.88
   ctx.beginPath(); ctx.moveTo(60, H * 0.635); ctx.lineTo(W - 60, H * 0.635); ctx.stroke()
   ctx.globalAlpha = 1; ctx.fillStyle = card.accentColor; ctx.font = '15px serif'; ctx.textAlign = 'center'
   ctx.fillText('· ✦ ·', W / 2, H * 0.635)
 
-  // Dark panel behind title area for contrast
   ctx.save()
   ctx.fillStyle = 'rgba(4, 2, 8, 0.82)'
   ctx.fillRect(62, H * 0.640, W - 124, H * 0.185)
   ctx.restore()
 
-  // Title
   ctx.save()
   ctx.fillStyle = '#f5f2ee'
   ctx.font = '700 50px Georgia, serif'
@@ -799,29 +729,24 @@ function createFrontTexture(card: CardDef): THREE.CanvasTexture {
   ctx.fillText(card.label.toUpperCase(), W / 2, H * 0.693)
   ctx.restore()
 
-  // Subtitle
-  const subtitles: Record<string, string> = { about: '☽  the self  ☽', formations: '✦  the path  ✦', contact: '✉  the thread  ✉', experiences: '✵  the journey  ✵' }
   ctx.save()
   ctx.fillStyle = card.accentColor
   ctx.globalAlpha = 0.9
   ctx.font = 'italic 18px Georgia, serif'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
-  ctx.fillText(subtitles[card.id] ?? '', W / 2, H * 0.745)
+  ctx.fillText(CARD_SUBTITLES[card.id] ?? '', W / 2, H * 0.745)
   ctx.restore()
 
-  // Botanical sides near title
   ctx.save(); ctx.globalAlpha = 0.65
   drawSprig(ctx, 54, H * 0.71, -0.12, card.accentColor, 0.85)
   drawSprig(ctx, W - 54, H * 0.71, Math.PI + 0.12, card.accentColor, 0.85)
   ctx.restore()
 
-  // Bottom divider
   ctx.strokeStyle = card.accentColor; ctx.lineWidth = 1.2; ctx.globalAlpha = 0.75
   ctx.beginPath(); ctx.moveTo(60, H * 0.825); ctx.lineTo(W - 60, H * 0.825); ctx.stroke()
   ctx.globalAlpha = 1
 
-  // Bottom ornaments
   ctx.fillStyle = card.accentColor; ctx.globalAlpha = 1.0
   ctx.font = '22px serif'; ctx.textAlign = 'center'
   ctx.fillText('· · ·', W / 2, H - 54)
@@ -832,8 +757,6 @@ function createFrontTexture(card: CardDef): THREE.CanvasTexture {
 
   const tex = new THREE.CanvasTexture(canvas); tex.needsUpdate = true; return tex
 }
-
-// ─── TarotCard component ──────────────────────────────────────────────────────
 
 interface TarotCardProps {
   def: CardDef
@@ -868,21 +791,17 @@ function TarotCard({ def, isActive, isAnyActive, onSelect, dealDelay }: TarotCar
     const canvas = document.createElement('canvas')
     canvas.width = 256; canvas.height = 256
     const ctx2d = canvas.getContext('2d')!
-    // Plane is 3.0 × 4.6 units, card is 2.0 × 3.3 units
-    // Map card rect onto the 256×256 canvas
-    const ratioX = 2.0 / 3.0   // card width / plane width
-    const ratioY = 3.3 / 4.6   // card height / plane height
-    const cw = 256 * ratioX    // card width in canvas px (~171)
-    const ch = 256 * ratioY    // card height in canvas px (~183)
+    const ratioX = 2.0 / 3.0
+    const ratioY = 3.3 / 4.6
+    const cw = 256 * ratioX
+    const ch = 256 * ratioY
     const cx = (256 - cw) / 2
     const cy = (256 - ch) / 2
-    // Draw the card rect with a glowing shadow, then punch out the interior
     ctx2d.clearRect(0, 0, 256, 256)
     ctx2d.shadowColor = def.accentColor
     ctx2d.shadowBlur = 14
     ctx2d.fillStyle = def.accentColor + 'ff'
     ctx2d.fillRect(cx, cy, cw, ch)
-    // Erase the solid filled rect — leaves only the outer shadow/glow
     ctx2d.globalCompositeOperation = 'destination-out'
     ctx2d.shadowBlur = 0
     ctx2d.fillStyle = 'rgba(0,0,0,1)'
@@ -897,7 +816,7 @@ function TarotCard({ def, isActive, isAnyActive, onSelect, dealDelay }: TarotCar
       glowTexture.dispose()
       document.body.style.cursor = 'auto'
     }
-  }, [frontTexture, backTexture])
+  }, [frontTexture, backTexture, glowTexture])
 
   const handleClick = useCallback((e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation()
@@ -954,11 +873,13 @@ function TarotCard({ def, isActive, isAnyActive, onSelect, dealDelay }: TarotCar
       materialBackRef.current.opacity = 1 - dimProgress.current * 0.5
     }
 
-    flipProgress.current = THREE.MathUtils.lerp(flipProgress.current, isActive ? 1 : 0, 1 - Math.pow(0.008, delta))
+    flipProgress.current = THREE.MathUtils.lerp(flipProgress.current, isActive ? 1 : 0, 1 - Math.pow(0.004, delta))
 
     if (meshRef.current) {
-      meshRef.current.rotation.y = flipProgress.current * Math.PI
-      meshRef.current.scale.setScalar(1 - dimProgress.current * 0.08)
+      const flipScale = Math.abs(Math.cos(flipProgress.current * Math.PI))
+      const dimScale = 1 - dimProgress.current * 0.08
+      meshRef.current.rotation.y = flipProgress.current >= 0.5 ? Math.PI : 0
+      meshRef.current.scale.set(flipScale * dimScale, dimScale, dimScale)
     }
   })
 
@@ -991,8 +912,6 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
-// ─── TarotCards (scene root) ──────────────────────────────────────────────────
-
 export interface TarotCardsProps {
   activeSection: string | null
   onCardSelect: (id: string | null) => void
@@ -1009,18 +928,20 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
 
   const dynamicSlots = isPortrait ? PORTRAIT_SLOTS : LANDSCAPE_SLOTS
 
-  const cards: CardDef[] = useMemo(() => {
-    const defs = [
-      { id: 'about', symbol: '☽', label: t.about.title, accentColor: '#6b4d7a' },
-      { id: 'formations', symbol: '✦', label: t.formations.title, accentColor: '#d4a574' },
-      { id: 'experiences', symbol: '✵', label: t.experiences.title, accentColor: '#8099b8' },
-      { id: 'contact', symbol: '✉', label: t.contact.title, accentColor: '#7a9578' },
-    ]
-    return defs.map((def, i) => ({
-      ...def,
+  const labelMap: Record<string, string> = {
+    about: t.about.title,
+    formations: t.formations.title,
+    experiences: t.experiences.title,
+    contact: t.contact.title,
+  }
+
+  const cards: CardDef[] = useMemo(() => (
+    CARD_CONFIGS.map((cfg, i) => ({
+      ...cfg,
+      label: labelMap[cfg.id],
       position: dynamicSlots[slotOrder[i]].position,
     }))
-  }, [t, slotOrder, dynamicSlots])
+  ), [t, slotOrder, dynamicSlots])
 
   const handleSelect = useCallback((id: string) => {
     onCardSelect(activeSection === id ? null : id)
@@ -1029,20 +950,17 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
   useFrame(() => {
     if (!sceneGroupRef.current) return
 
-    // Orientation detection
     const portrait = size.height > size.width
     if (portrait !== prevPortrait.current) {
       prevPortrait.current = portrait
       setIsPortrait(portrait)
     }
 
-    // Responsive scale based on orientation
     const s = portrait
       ? (size.width < 400 ? 0.85 : size.width < 480 ? 0.90 : size.width < 768 ? 0.90 : 0.88)
       : (size.width < 380 ? 0.50 : size.width < 480 ? 0.62
           : size.width < 680 ? 0.80 : size.width < 900 ? 0.95 : 1.05)
     sceneGroupRef.current.scale.setScalar(s)
-    // Slight upward shift in portrait to account for header
     sceneGroupRef.current.position.y = portrait ? 0.15 : 0
   })
 
