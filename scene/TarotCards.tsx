@@ -726,7 +726,7 @@ function createFrontTexture(card: CardDef): THREE.CanvasTexture {
   ctx.font = '700 50px Georgia, serif'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
-  ctx.fillText(card.label.toUpperCase(), W / 2, H * 0.693)
+  ctx.fillText(card.label.toUpperCase(), W / 2, H * 0.726)
   ctx.restore()
 
   ctx.save()
@@ -735,12 +735,12 @@ function createFrontTexture(card: CardDef): THREE.CanvasTexture {
   ctx.font = 'italic 18px Georgia, serif'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
-  ctx.fillText(CARD_SUBTITLES[card.id] ?? '', W / 2, H * 0.745)
+  ctx.fillText(CARD_SUBTITLES[card.id] ?? '', W / 2, H * 0.776)
   ctx.restore()
 
   ctx.save(); ctx.globalAlpha = 0.65
-  drawSprig(ctx, 54, H * 0.71, -0.12, card.accentColor, 0.85)
-  drawSprig(ctx, W - 54, H * 0.71, Math.PI + 0.12, card.accentColor, 0.85)
+  drawSprig(ctx, 54, H * 0.743, -0.12, card.accentColor, 0.85)
+  drawSprig(ctx, W - 54, H * 0.743, Math.PI + 0.12, card.accentColor, 0.85)
   ctx.restore()
 
   ctx.strokeStyle = card.accentColor; ctx.lineWidth = 1.2; ctx.globalAlpha = 0.75
