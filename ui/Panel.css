@@ -347,6 +347,10 @@
 
 /* ── Mobile ── */
 @media (max-width: 640px) {
+  .ui-footer {
+    display: none;
+  }
+
   .ui-header {
     padding: 0.875rem 1rem;
   }

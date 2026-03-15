@@ -24,10 +24,10 @@ const LANDSCAPE_SLOTS: SlotDef[] = [
 
 // 2×2 grid (portrait mobile / tablet)
 const PORTRAIT_SLOTS: SlotDef[] = [
-  { position: [-1.1, 1.8, 0] },
-  { position: [1.1, 1.8, 0] },
-  { position: [-1.1, -1.8, 0] },
-  { position: [1.1, -1.8, 0] },
+  { position: [-1.15, 2.0, 0] },
+  { position: [1.15, 2.0, 0] },
+  { position: [-1.15, -2.0, 0] },
+  { position: [1.15, -2.0, 0] },
 ]
 
 // ─── Drawing helpers ──────────────────────────────────────────────────────────
@@ -860,7 +860,7 @@ function TarotCard({ def, isActive, isAnyActive, onSelect, dealDelay }: TarotCar
   const dimProgress = useRef(0)
   const dealProgress = useRef(0)
   const dealClock = useRef(0)
-  const settledBaseY = useRef(-4)
+  const settledBaseY = useRef(-8)
 
   const backTexture = useMemo(() => createBackTexture(), [])
   const frontTexture = useMemo(() => createFrontTexture(def), [def])
@@ -918,7 +918,7 @@ function TarotCard({ def, isActive, isAnyActive, onSelect, dealDelay }: TarotCar
   useFrame((_state, delta) => {
     dealClock.current += delta
     if (dealClock.current > dealDelay && dealProgress.current < 1) {
-      dealProgress.current = Math.min(1, dealProgress.current + delta / 0.65)
+      dealProgress.current = Math.min(1, dealProgress.current + delta / 0.85)
     }
     const t = dealProgress.current
     const ease = 1 - Math.pow(1 - t, 3)
@@ -932,7 +932,7 @@ function TarotCard({ def, isActive, isAnyActive, onSelect, dealDelay }: TarotCar
       if (dealProgress.current < 1) {
         groupRef.current.position.x = THREE.MathUtils.lerp(0, def.position[0], ease)
         groupRef.current.position.z = THREE.MathUtils.lerp(0, def.position[2], ease)
-        settledBaseY.current = THREE.MathUtils.lerp(-4, def.position[1], ease)
+        settledBaseY.current = THREE.MathUtils.lerp(-8, def.position[1], ease)
       } else {
         const snap = 1 - Math.pow(0.005, delta)
         groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, def.position[0], snap)
@@ -963,7 +963,7 @@ function TarotCard({ def, isActive, isAnyActive, onSelect, dealDelay }: TarotCar
   })
 
   return (
-    <group ref={groupRef} position={[0, -4, 0]}>
+    <group ref={groupRef} position={[0, -8, 0]}>
       <mesh position={[0, 0, 0.02]}>
         <planeGeometry args={[3.0, 4.6]} />
         <meshBasicMaterial ref={glowBorderRef} map={glowTexture} transparent opacity={0} blending={THREE.AdditiveBlending} depthWrite={false} />
@@ -1038,12 +1038,12 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
 
     // Responsive scale based on orientation
     const s = portrait
-      ? (size.width < 480 ? 0.95 : size.width < 768 ? 0.90 : 0.85)
+      ? (size.width < 400 ? 0.85 : size.width < 480 ? 0.90 : size.width < 768 ? 0.90 : 0.88)
       : (size.width < 380 ? 0.50 : size.width < 480 ? 0.62
           : size.width < 680 ? 0.80 : size.width < 900 ? 0.95 : 1.05)
     sceneGroupRef.current.scale.setScalar(s)
-    // Shift slightly down in portrait to account for header > footer
-    sceneGroupRef.current.position.y = portrait ? -0.3 : 0
+    // Slight upward shift in portrait to account for header
+    sceneGroupRef.current.position.y = portrait ? 0.15 : 0
   })
 
   return (
