@@ -97,10 +97,8 @@ export const translations = {
           company: 'Studio Gyhel',
           location: 'Annecy, France',
           highlights: [
-            'Mise en place de la stratégie marketing et communication pour un studio de jeux vidéo indie',
-            'Animation des réseaux sociaux et des communautés gaming',
-            'Préparation d\'une campagne de financement participatif',
-            'Développement de la stratégie transmédia du jeu',
+            'Stratégie marketing & communication pour un studio de jeux vidéo indie',
+            'Animation des réseaux sociaux, campagne de financement participatif et développement transmédia',
           ]
         },
         {
@@ -248,10 +246,8 @@ export const translations = {
           company: 'Studio Gyhel',
           location: 'Annecy, France',
           highlights: [
-            'Defined the marketing and communication strategy for an indie video game studio',
-            'Managed social media across general and gaming-specific platforms',
-            'Prepared a crowdfunding campaign',
-            'Developed the transmedia strategy for the game',
+            'Marketing & communication strategy for an indie video game studio',
+            'Managed social media, crowdfunding campaign and transmedia development',
           ]
         },
         {
