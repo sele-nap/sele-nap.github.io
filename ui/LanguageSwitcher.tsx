@@ -27,18 +27,14 @@ export function LanguageSwitcher() {
 
   return (
     <div className="language-switcher" ref={containerRef}>
-      <div className="lang-toggle" role="group" aria-label="Language selector">
-        <button
-          className={`lang-option${language === 'fr' ? ' active' : ''}`}
-          onClick={() => handleSelect('fr')}
-          aria-pressed={language === 'fr'}
-        >FR</button>
-        <button
-          className={`lang-option${language === 'en' ? ' active' : ''}`}
-          onClick={() => handleSelect('en')}
-          aria-pressed={language === 'en'}
-        >EN</button>
-      </div>
+      <button
+        className="lang-toggle"
+        onClick={() => handleSelect(language === 'fr' ? 'en' : 'fr')}
+        aria-label={`Switch to ${language === 'fr' ? 'English' : 'French'}`}
+      >
+        <span className={`lang-option${language === 'fr' ? ' active' : ''}`}>FR</span>
+        <span className={`lang-option${language === 'en' ? ' active' : ''}`}>EN</span>
+      </button>
     </div>
   )
 }
