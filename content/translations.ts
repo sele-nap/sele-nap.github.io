@@ -306,7 +306,7 @@ export const translations = {
           title: '3D Configurator',
           period: '2022 – 2025',
           company: 'Decq',
-          description: 'An online 3D configuration tool allowing industrial clients to customize their products in real time. Designed from start to finish with a maintainable front/back architecture and deployed to production.',
+          description: 'An online 3D configuration tool allowing industrial clients to customize their products in real time. Designed from scratch to finish with a maintainable front/back architecture and deployed to production.',
           tech: ['Vue.js', 'Three.js', 'TypeScript', 'PHP'],
           video: '/Config3D.mp4',
         }
