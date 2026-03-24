@@ -15,17 +15,19 @@ interface CardDef {
 type SlotDef = { position: [number, number, number] }
 
 const LANDSCAPE_SLOTS: SlotDef[] = [
-  { position: [-3.2, 0, 0] },
-  { position: [-1.07, 0, 0] },
-  { position: [1.07, 0, 0] },
-  { position: [3.2, 0, 0] },
+  { position: [-5.0, 0, 0] },
+  { position: [-2.5, 0, 0] },
+  { position: [0, 0, 0] },
+  { position: [2.5, 0, 0] },
+  { position: [5.0, 0, 0] },
 ]
 
 const PORTRAIT_SLOTS: SlotDef[] = [
-  { position: [-1.15, 2.0, 0] },
-  { position: [1.15, 2.0, 0] },
-  { position: [-1.15, -2.0, 0] },
-  { position: [1.15, -2.0, 0] },
+  { position: [-1.15, 3.6, 0] },
+  { position: [1.15, 3.6, 0] },
+  { position: [-1.15, 0.0, 0] },
+  { position: [1.15, 0.0, 0] },
+  { position: [0, -3.6, 0] },
 ]
 
 const CARD_CONFIGS = [
@@ -33,10 +35,11 @@ const CARD_CONFIGS = [
   { id: 'formations',  symbol: '✦', accentColor: '#d4a574' },
   { id: 'experiences', symbol: '✵', accentColor: '#8099b8' },
   { id: 'contact',     symbol: '✉', accentColor: '#7a9578' },
+  { id: 'projects',    symbol: '⬡', accentColor: '#c4855a' },
 ] as const
 
 const CARD_ROMAN: Record<string, string> = {
-  about: 'I', formations: 'II', experiences: 'III', contact: 'IV',
+  about: 'I', formations: 'II', experiences: 'III', contact: 'IV', projects: 'V',
 }
 
 const CARD_SUBTITLES: Record<string, string> = {
@@ -44,6 +47,7 @@ const CARD_SUBTITLES: Record<string, string> = {
   formations: '✦  the path  ✦',
   experiences: '✵  the journey  ✵',
   contact: '✉  the thread  ✉',
+  projects: '⬡  the craft  ⬡',
 }
 
 function drawLeafShape(ctx: CanvasRenderingContext2D, size: number) {
@@ -645,6 +649,107 @@ function drawCardIllustration(ctx: CanvasRenderingContext2D, W: number, H: numbe
     drawSprig(ctx, cx + 142, cy + 20, Math.PI - 0.28, card.accentColor, 1.05)
     drawSprig(ctx, cx - 142, cy + 20, 0.28, card.accentColor, 1.05)
     ctx.restore()
+
+  } else if (card.id === 'projects') {
+    const drawHex = (hx: number, hy: number, r: number) => {
+      ctx.beginPath()
+      for (let i = 0; i < 6; i++) {
+        const a = (i * Math.PI) / 3 - Math.PI / 6
+        i === 0 ? ctx.moveTo(hx + r * Math.cos(a), hy + r * Math.sin(a))
+                : ctx.lineTo(hx + r * Math.cos(a), hy + r * Math.sin(a))
+      }
+      ctx.closePath()
+    }
+
+    // Outer glowing ring
+    ctx.save(); ctx.shadowColor = card.accentColor; ctx.shadowBlur = 28
+    ctx.strokeStyle = `${card.accentColor}aa`; ctx.lineWidth = 2.2
+    ctx.beginPath(); ctx.arc(cx, cy, 132, 0, Math.PI * 2); ctx.stroke()
+    ctx.restore()
+
+    // Large central hexagon
+    ctx.save()
+    ctx.shadowColor = card.accentColor; ctx.shadowBlur = 18
+    ctx.strokeStyle = card.accentColor; ctx.lineWidth = 2.5; ctx.globalAlpha = 0.92
+    drawHex(cx, cy, 90); ctx.stroke()
+    ctx.restore()
+
+    // Inner hexagon
+    ctx.strokeStyle = `${card.accentColor}66`; ctx.lineWidth = 1.2; ctx.globalAlpha = 0.75
+    drawHex(cx, cy, 62); ctx.stroke()
+
+    // Innermost filled hexagon (dark)
+    ctx.fillStyle = 'rgba(10, 8, 16, 0.9)'; ctx.globalAlpha = 0.9
+    drawHex(cx, cy, 44); ctx.fill()
+
+    // ⬡ symbol inside
+    ctx.save()
+    ctx.shadowColor = card.accentColor; ctx.shadowBlur = 22
+    ctx.fillStyle = card.accentColor; ctx.globalAlpha = 0.95
+    ctx.font = 'bold 52px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+    ctx.fillText('⬡', cx, cy)
+    ctx.restore()
+
+    // Grid of small hexagons orbiting
+    const hexRing = [0, 60, 120, 180, 240, 300]
+    hexRing.forEach((deg, i) => {
+      const a = (deg * Math.PI) / 180
+      const hx2 = cx + Math.cos(a) * 108
+      const hy2 = cy + Math.sin(a) * 108
+      ctx.save()
+      ctx.strokeStyle = card.accentColor
+      ctx.lineWidth = 1.2
+      ctx.globalAlpha = 0.45 + (i % 2) * 0.2
+      drawHex(hx2, hy2, 20); ctx.stroke()
+      ctx.restore()
+    })
+
+    // Tiny accent hexagons further out
+    ;[30, 90, 150, 210, 270, 330].forEach((deg, i) => {
+      const a = (deg * Math.PI) / 180
+      const hx2 = cx + Math.cos(a) * 128
+      const hy2 = cy + Math.sin(a) * 128
+      ctx.save()
+      ctx.strokeStyle = card.accentColor
+      ctx.lineWidth = 0.9
+      ctx.globalAlpha = 0.25 + (i % 3) * 0.1
+      drawHex(hx2, hy2, 11); ctx.stroke()
+      ctx.restore()
+    })
+
+    // Diagonal grid lines suggesting blueprint
+    ctx.save()
+    ctx.strokeStyle = `${card.accentColor}22`; ctx.lineWidth = 0.8; ctx.globalAlpha = 0.6
+    for (let gx = cx - 160; gx <= cx + 160; gx += 32) {
+      ctx.beginPath(); ctx.moveTo(gx, cy - 140); ctx.lineTo(gx, cy + 140); ctx.stroke()
+    }
+    for (let gy = cy - 140; gy <= cy + 140; gy += 32) {
+      ctx.beginPath(); ctx.moveTo(cx - 160, gy); ctx.lineTo(cx + 160, gy); ctx.stroke()
+    }
+    ctx.restore()
+
+    // Scattered accent stars
+    const cStars = [
+      { x: cx + 70, y: cy - 100 }, { x: cx - 68, y: cy - 94 },
+      { x: cx + 112, y: cy + 14 }, { x: cx - 108, y: cy + 22 },
+      { x: cx + 60, y: cy + 108 }, { x: cx - 54, y: cy + 112 },
+    ]
+    cStars.forEach(s => {
+      ctx.save(); ctx.shadowColor = '#f0dcc8'; ctx.shadowBlur = 8
+      ctx.fillStyle = '#f0dcc8'; ctx.globalAlpha = 0.65
+      ctx.beginPath(); ctx.arc(s.x, s.y, 2.5, 0, Math.PI * 2); ctx.fill()
+      ctx.restore()
+    })
+
+    ctx.save(); ctx.globalAlpha = 0.58
+    drawCrystalCluster(ctx, cx - 130, cy - 46, card.accentColor, 0.65)
+    drawCrystalCluster(ctx, cx + 130, cy - 46, card.accentColor, 0.65)
+    ctx.restore()
+
+    ctx.save(); ctx.globalAlpha = 0.52
+    drawSprig(ctx, cx + 142, cy + 18, Math.PI - 0.28, card.accentColor, 1.0)
+    drawSprig(ctx, cx - 142, cy + 18, 0.28, card.accentColor, 1.0)
+    ctx.restore()
   }
 }
 
@@ -660,8 +765,10 @@ function createFrontTexture(card: CardDef): THREE.CanvasTexture {
     bg.addColorStop(0, '#1e1510'); bg.addColorStop(0.55, '#120f08'); bg.addColorStop(1, '#0a0808')
   } else if (card.id === 'experiences') {
     bg.addColorStop(0, '#0e1420'); bg.addColorStop(0.55, '#0a0f18'); bg.addColorStop(1, '#080810')
-  } else {
+  } else if (card.id === 'contact') {
     bg.addColorStop(0, '#101e14'); bg.addColorStop(0.55, '#0a1410'); bg.addColorStop(1, '#080a08')
+  } else {
+    bg.addColorStop(0, '#201410'); bg.addColorStop(0.55, '#150d08'); bg.addColorStop(1, '#0c0806')
   }
   ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H)
 
@@ -924,7 +1031,7 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
   const [isPortrait, setIsPortrait] = useState(false)
   const prevPortrait = useRef(false)
 
-  const slotOrder = useMemo(() => shuffle([0, 1, 2, 3]), [])
+  const slotOrder = useMemo(() => shuffle([0, 1, 2, 3, 4]), [])
 
   const dynamicSlots = isPortrait ? PORTRAIT_SLOTS : LANDSCAPE_SLOTS
 
@@ -933,6 +1040,7 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
     formations: t.formations.title,
     experiences: t.experiences.title,
     contact: t.contact.title,
+    projects: t.projects.title,
   }
 
   const cards: CardDef[] = useMemo(() => (
@@ -957,9 +1065,9 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
     }
 
     const s = portrait
-      ? (size.width < 400 ? 0.85 : size.width < 480 ? 0.90 : size.width < 768 ? 0.90 : 0.88)
-      : (size.width < 380 ? 0.50 : size.width < 480 ? 0.62
-          : size.width < 680 ? 0.80 : size.width < 900 ? 0.95 : 1.05)
+      ? (size.width < 400 ? 0.78 : size.width < 480 ? 0.82 : size.width < 768 ? 0.82 : 0.80)
+      : (size.width < 380 ? 0.45 : size.width < 480 ? 0.55
+          : size.width < 680 ? 0.72 : size.width < 900 ? 0.86 : 0.95)
     sceneGroupRef.current.scale.setScalar(s)
     sceneGroupRef.current.position.y = portrait ? 0.15 : 0
   })

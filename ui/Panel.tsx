@@ -106,6 +106,40 @@ export function Panel({ activeSection, onClose }: PanelProps) {
             </div>
           )}
 
+          {activeSection === 'projects' && (
+            <div className="modal-content">
+              <h2 className="modal-title">{t.projects.title}</h2>
+              <div className="modal-accent-line" />
+              <p className="modal-text">{t.projects.description}</p>
+              <div className="projects-list">
+                {t.projects.items.map((project, i) => (
+                  <div key={i} className="project-item">
+                    <div className="project-header">
+                      <h3 className="project-title">{project.title}</h3>
+                      <span className="project-meta">{project.period} · {project.company}</span>
+                    </div>
+                    <p className="project-description">{project.description}</p>
+                    <div className="project-tech">
+                      {project.tech.map((tag, j) => (
+                        <span key={j} className="project-tech-tag">{tag}</span>
+                      ))}
+                    </div>
+                    {project.video && (
+                      <video
+                        className="project-video"
+                        src={project.video}
+                        controls
+                        muted
+                        loop
+                        playsInline
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {activeSection === 'contact' && (
             <div className="modal-content">
               <h2 className="modal-title">{t.contact.title}</h2>

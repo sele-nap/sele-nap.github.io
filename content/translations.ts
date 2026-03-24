@@ -134,6 +134,21 @@ export const translations = {
       ]
     },
 
+    projects: {
+      title: 'Projets',
+      description: 'Une sélection de réalisations concrètes, de la conception à la mise en production.',
+      items: [
+        {
+          title: 'Configurateur 3D',
+          period: '2022 – 2025',
+          company: 'Decq',
+          description: 'Outil de configuration 3D en ligne permettant aux client·es industriels et particuliers de personnaliser leurs produits en temps réel. Conçu de A à Z avec une architecture front/back maintenable et mis en production.',
+          tech: ['Vue.js', 'Three.js', 'TypeScript', 'PHP'],
+          video: '/Config3D.mp4',
+        }
+      ]
+    },
+
     contact: {
       title: 'Contact',
       description: "Si vous souhaitez collaborer ou en savoir plus sur mon travail, n'hésitez pas à me contacter. 🐸",
@@ -279,6 +294,21 @@ export const translations = {
             'Created visual materials for book fairs (banners, order forms)',
             'Supported sales activities',
           ]
+        }
+      ]
+    },
+
+    projects: {
+      title: 'Projects',
+      description: 'A selection of concrete work, from design to production.',
+      items: [
+        {
+          title: '3D Configurator',
+          period: '2022 – 2025',
+          company: 'Decq',
+          description: 'An online 3D configuration tool allowing industrial clients to customize their products in real time. Designed from start to finish with a maintainable front/back architecture and deployed to production.',
+          tech: ['Vue.js', 'Three.js', 'TypeScript', 'PHP'],
+          video: '/Config3D.mp4',
         }
       ]
     },

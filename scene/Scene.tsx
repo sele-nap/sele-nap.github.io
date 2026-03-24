@@ -11,7 +11,7 @@ function ResponsiveCamera() {
     lastSize.current = { w: size.width, h: size.height }
     const isPortrait = size.height > size.width
     const z = isPortrait
-      ? (size.width < 480 ? 6.5 : 7)
+      ? (size.width < 480 ? 8 : 8.5)
       : (size.width < 380 ? 10 : size.width < 480 ? 8 : size.width < 768 ? 7 : 5)
     camera.position.z = z
   })
