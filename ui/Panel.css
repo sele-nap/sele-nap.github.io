@@ -357,6 +357,35 @@
   border-radius: 3px;
 }
 
+.project-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  background: rgba(196, 133, 90, 0.08);
+  border: 1px solid rgba(196, 133, 90, 0.35);
+  border-radius: 4px;
+  color: var(--candle-glow);
+  font-family: var(--font-mono);
+  font-size: 0.775rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: all 0.22s ease;
+  margin-bottom: 0.25rem;
+}
+
+.project-link-btn:hover {
+  background: rgba(196, 133, 90, 0.2);
+  border-color: var(--candle-glow);
+  transform: translateY(-2px);
+}
+
+.project-link-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
 .project-video {
   width: 100%;
   border-radius: 4px;

@@ -124,10 +124,21 @@ export function Panel({ activeSection, onClose }: PanelProps) {
                         <span key={j} className="project-tech-tag">{tag}</span>
                       ))}
                     </div>
-                    {project.video && (
+                    {'link' in project && project.link && (
+                      <a
+                        href={project.link as string}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="project-link-btn"
+                      >
+                        <span className="project-link-icon">↗</span>
+                        Voir le site
+                      </a>
+                    )}
+                    {'video' in project && project.video && (
                       <video
                         className="project-video"
-                        src={project.video}
+                        src={project.video as string}
                         controls
                         muted
                         loop

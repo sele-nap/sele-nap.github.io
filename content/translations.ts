@@ -79,6 +79,19 @@ export const translations = {
       description: 'Un parcours à la croisée du web, de la 3D et de l\'innovation.',
       jobs: [
         {
+          title: 'Développeuse Full-Stack orientée Frontend',
+          period: 'Avril 2026 – aujourd\'hui',
+          company: 'Gedeon',
+          location: 'Lyon, France',
+          highlights: [
+            'Développement d\'interfaces accessibles et performantes (React, Next.js) alignées sur le design system',
+            'Intégration d\'APIs REST via SWR et développement de services backend (Express.js, Lambda AWS)',
+            'Manipulation de données avec Mongoose / MongoDB',
+            'Contribution à l\'architecture orientée services et montée en compétence sur AWS (Lambda, S3, CloudWatch)',
+            'Tests unitaires et d\'intégration, revues de code et respect des conventions d\'équipe',
+          ]
+        },
+        {
           title: 'Développeuse Full-Stack 3D',
           period: 'Mars 2022 – Juillet 2025',
           company: 'Decq',
@@ -138,6 +151,14 @@ export const translations = {
       title: 'Projets',
       description: 'Une sélection de réalisations concrètes, de la conception à la mise en production.',
       items: [
+        {
+          title: 'Plan Épargne Retraite',
+          period: 'Avril 2026 – aujourd\'hui',
+          company: 'Gedeon',
+          description: 'Plateforme fintech dédiée à la gestion des Plans d\'Épargne Retraite (PER), à destination des particuliers, des entreprises et des courtiers. L\'outil offre une vision à 360° de la retraite en agrégeant informations de retraite publique et épargne personnelle, avec simulateurs de taux de remplacement et projections de revenus.',
+          tech: ['React', 'Next.js', 'TypeScript', 'Express.js', 'SWR', 'MongoDB', 'AWS'],
+          link: 'https://gedeon.io/',
+        },
         {
           title: 'Configurateur 3D',
           period: '2022 – 2025',
@@ -243,6 +264,19 @@ export const translations = {
       description: 'A path at the crossroads of web, 3D and innovation.',
       jobs: [
         {
+          title: 'Frontend-Oriented Full-Stack Developer',
+          period: 'April 2026 – Present',
+          company: 'Gedeon',
+          location: 'Lyon, France',
+          highlights: [
+            'Building accessible and performant interfaces (React, Next.js) aligned with the design system',
+            'Integrating REST APIs via SWR and developing backend services (Express.js, AWS Lambda)',
+            'Handling data with Mongoose / MongoDB',
+            'Contributing to a service-oriented architecture and upskilling on AWS (Lambda, S3, CloudWatch)',
+            'Unit and integration testing, code reviews and team conventions',
+          ]
+        },
+        {
           title: 'Full-Stack 3D Developer',
           period: 'March 2022 – July 2025',
           company: 'Decq',
@@ -302,6 +336,14 @@ export const translations = {
       title: 'Projects',
       description: 'A selection of concrete work, from design to production.',
       items: [
+        {
+          title: 'Plan Épargne Retraite',
+          period: 'April 2026 – Present',
+          company: 'Gedeon',
+          description: 'A fintech platform dedicated to managing Retirement Savings Plans (PERs), designed for individuals, businesses, and brokers. The tool provides a 360° view of retirement by combining information on public pensions and personal savings, along with replacement rate calculators and income projections.',
+          tech: ['React', 'Next.js', 'TypeScript', 'Express.js', 'SWR', 'MongoDB', 'AWS'],
+          link: 'https://gedeon.io/',
+        },
         {
           title: '3D Configurator',
           period: '2022 – 2025',
