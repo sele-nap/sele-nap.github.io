@@ -1,20 +1,61 @@
+import { ErrorBoundary } from '@/base/ErrorBoundary';
 import { MagicCursor } from '@/base/MagicCursor';
-import { LanguageProvider } from '@/hooks/useLanguage';
+import { LanguageProvider, useLanguage } from '@/hooks/useLanguage';
 import { MainLayout } from '@/layout/MainLayout';
-import { Scene } from '@/scene/canvas/Scene';
-import { useState } from 'react';
+import type { SectionId } from '@/types';
+import { lazy, Suspense, useState } from 'react';
 
-export function App() {
-  const [activeSection, setActiveSection] = useState<string | null>(null);
+const Scene = lazy(() =>
+  import('@/scene/canvas/Scene').then((m) => ({ default: m.Scene })),
+);
+
+function SceneFallback() {
+  const { t } = useLanguage();
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#11111b',
+        color: '#a6adc8',
+        fontFamily: "'Fira Code', monospace",
+        fontSize: '0.8rem',
+      }}
+    >
+      {t.hero.hint}
+    </div>
+  );
+}
+
+function AppContent() {
+  const [activeSection, setActiveSection] = useState<SectionId | null>(null);
 
   return (
-    <LanguageProvider>
-      <MagicCursor />
-      <Scene activeSection={activeSection} onCardSelect={setActiveSection} />
+    <>
+      <MagicCursor hidden={activeSection !== null} />
+      <ErrorBoundary fallback={<SceneFallback />}>
+        <Suspense fallback={<SceneFallback />}>
+          <Scene
+            activeSection={activeSection}
+            onCardSelect={setActiveSection}
+          />
+        </Suspense>
+      </ErrorBoundary>
       <MainLayout
         activeSection={activeSection}
-        onClose={() => setActiveSection(null)}
+        onSectionSelect={setActiveSection}
       />
+    </>
+  );
+}
+
+export function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
     </LanguageProvider>
   );
 }

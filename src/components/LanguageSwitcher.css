@@ -31,7 +31,7 @@
 .lang-option {
   padding: 5px 11px;
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--stone-gray);
   transition:
@@ -81,6 +81,6 @@
 @media (max-width: 768px) {
   .lang-option {
     padding: 4px 9px;
-    font-size: 0.5rem;
+    font-size: 0.75rem;
   }
 }

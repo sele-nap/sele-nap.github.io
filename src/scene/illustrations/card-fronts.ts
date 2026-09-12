@@ -14,7 +14,6 @@ import {
   drawOuterRing,
   drawPentagram,
   drawScatteredStars,
-  drawSprig,
   drawVineBorder,
 } from './drawing-utils';
 
@@ -891,16 +890,6 @@ export function createFrontTexture(card: CardDef): THREE.CanvasTexture {
   drawOrnamentalCorner(ctx, W - 52, H - 52, -1, -1, card.accentColor);
   drawOrnamentalCorner(ctx, 52, H - 52, 1, -1, card.accentColor);
 
-  ctx.save();
-  ctx.globalAlpha = 0.5;
-  if (card.id === 'about') {
-    drawMushroom(ctx, 72, H - 170, 20, catppuccin.pink);
-    drawMushroom(ctx, 58, H - 154, 15, catppuccin.maroon);
-    drawMushroom(ctx, W - 72, H - 170, 20, catppuccin.pink);
-    drawMushroom(ctx, W - 58, H - 154, 15, catppuccin.maroon);
-  }
-  ctx.restore();
-
   ctx.fillStyle = card.accentColor;
   ctx.globalAlpha = 1.0;
   ctx.font = '700 17px monospace';
@@ -959,16 +948,28 @@ export function createFrontTexture(card: CardDef): THREE.CanvasTexture {
   ctx.save();
   ctx.fillStyle = card.accentColor;
   ctx.globalAlpha = 0.9;
-  ctx.font = 'italic 18px Georgia, serif';
-  ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(card.subtitle, W / 2, H * 0.776);
-  ctx.restore();
-
-  ctx.save();
-  ctx.globalAlpha = 0.65;
-  drawSprig(ctx, 54, H * 0.743, -0.12, card.accentColor, 0.85);
-  drawSprig(ctx, W - 54, H * 0.743, Math.PI + 0.12, card.accentColor, 0.85);
+  const subY = H * 0.776;
+  const subParts = card.subtitle.match(/^(\S+)\s+(.+)\s+(\S+)$/);
+  if (subParts) {
+    const [, left, mid, right] = subParts;
+    ctx.font = '18px Georgia, serif';
+    ctx.textAlign = 'center';
+    const midW = ctx.measureText(mid).width;
+    const gap = 10;
+    ctx.textAlign = 'right';
+    ctx.fillText(left, W / 2 - midW / 2 - gap, subY);
+    ctx.font = 'italic 18px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(mid, W / 2, subY);
+    ctx.font = '18px Georgia, serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(right, W / 2 + midW / 2 + gap, subY);
+  } else {
+    ctx.font = 'italic 18px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(card.subtitle, W / 2, subY);
+  }
   ctx.restore();
 
   ctx.strokeStyle = card.accentColor;

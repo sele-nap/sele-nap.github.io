@@ -1,7 +1,8 @@
 import { useLanguage } from '@/hooks/useLanguage';
-import { TarotCards, TarotCardsProps } from '@/scene/cards/TarotCards';
+import { TarotCards } from '@/scene/cards/TarotCards';
 import { StarField } from '@/scene/effects/StarField';
 import { catppuccin, sceneColors } from '@/tokens/theme';
+import type { SectionId } from '@/types';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useRef } from 'react';
 
@@ -29,15 +30,20 @@ function ResponsiveCamera() {
   return null;
 }
 
-export function Scene({ activeSection, onCardSelect }: TarotCardsProps) {
+export interface SceneProps {
+  activeSection: SectionId | null;
+  onCardSelect: (id: SectionId | null) => void;
+}
+
+export function Scene({ activeSection, onCardSelect }: SceneProps) {
   const { t } = useLanguage();
 
   const sections = [
-    { id: 'projects', label: t.projects.title },
-    { id: 'about', label: t.about.title },
-    { id: 'formations', label: t.formations.title },
-    { id: 'experiences', label: t.experiences.title },
-    { id: 'contact', label: t.contact.title },
+    { id: 'projects' as const, label: t.projects.title },
+    { id: 'about' as const, label: t.about.title },
+    { id: 'formations' as const, label: t.formations.title },
+    { id: 'experiences' as const, label: t.experiences.title },
+    { id: 'contact' as const, label: t.contact.title },
   ];
 
   const [bgFrom, bgMid, bgTo] = sceneColors.backgroundGradient;
@@ -47,7 +53,7 @@ export function Scene({ activeSection, onCardSelect }: TarotCardsProps) {
       aria-label="Portfolio"
       style={{
         width: '100%',
-        height: '100vh',
+        height: '100dvh',
         position: 'fixed',
         top: 0,
         left: 0,

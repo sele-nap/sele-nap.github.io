@@ -14,6 +14,10 @@ interface Particle {
   isStar: boolean;
 }
 
+interface MagicCursorProps {
+  hidden?: boolean;
+}
+
 const COLORS = [
   catppuccin.peach,
   catppuccin.mauve,
@@ -42,7 +46,7 @@ function drawStar(
   ctx.fill();
 }
 
-export function MagicCursor() {
+export function MagicCursor({ hidden }: MagicCursorProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const animFrameRef = useRef<number>(0);
@@ -134,7 +138,9 @@ export function MagicCursor() {
         position: 'fixed',
         inset: 0,
         pointerEvents: 'none',
-        zIndex: 9999,
+        zIndex: 50,
+        opacity: hidden ? 0 : 1,
+        transition: 'opacity 0.3s ease',
       }}
     />
   );
