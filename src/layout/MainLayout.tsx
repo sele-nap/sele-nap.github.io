@@ -9,7 +9,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { useSparkles } from '@/hooks/useSparkles';
 import '@/tokens/panel.css';
 import type { SectionId } from '@/types';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const NAV_SECTIONS: SectionId[] = [
   'about',
@@ -39,8 +39,35 @@ export function MainLayout({
   const { t } = useLanguage();
   const isOpen = activeSection !== null;
   const [menuOpen, setMenuOpen] = useState(false);
-  const cvSparkles = useSparkles(5);
   const menuSparkles = useSparkles(8);
+  const cvRef = useRef<HTMLAnchorElement>(null);
+  const [cvParticles, setCvParticles] = useState<
+    { id: number; sx: number; sy: number; ex: number; ey: number }[]
+  >([]);
+
+  const spawnCvParticles = useCallback(() => {
+    const el = cvRef.current;
+    if (!el) return;
+    const { width, height } = el.getBoundingClientRect();
+    const cx = width / 2;
+    const cy = height / 2;
+    let id = Date.now();
+    const pts = Array.from({ length: 8 }, (_, i) => {
+      const angle = (i / 8) * Math.PI * 2 + Math.random() * 0.4;
+      const sx = cx + (cx - 1) * Math.cos(angle);
+      const sy = cy + (cy - 1) * Math.sin(angle);
+      const dist = 12 + Math.random() * 14;
+      return {
+        id: id++,
+        sx,
+        sy,
+        ex: sx + Math.cos(angle) * dist,
+        ey: sy + Math.sin(angle) * dist,
+      };
+    });
+    setCvParticles(pts);
+    setTimeout(() => setCvParticles([]), 800);
+  }, []);
 
   const navLabels: Record<SectionId, string> = {
     projects: t.nav.projects,
@@ -77,11 +104,12 @@ export function MainLayout({
         </div>
         <div className="header-actions">
           <a
+            ref={cvRef}
             href={t.formations.cv.fileName}
             download
             className="header-cv-link"
             aria-label={t.formations.cv.label}
-            onMouseEnter={cvSparkles.spawn}
+            onMouseEnter={spawnCvParticles}
           >
             {t.hero.cvLabel}
             <svg
@@ -107,7 +135,20 @@ export function MainLayout({
                 strokeLinejoin="round"
               />
             </svg>
-            {cvSparkles.elements}
+            {cvParticles.map((p) => (
+              <span
+                key={p.id}
+                className="link-particle link-particle--yellow"
+                style={
+                  {
+                    '--sx': `${p.sx}px`,
+                    '--sy': `${p.sy}px`,
+                    '--ex': `${p.ex}px`,
+                    '--ey': `${p.ey}px`,
+                  } as React.CSSProperties
+                }
+              />
+            ))}
           </a>
           <LanguageSwitcher />
           <button

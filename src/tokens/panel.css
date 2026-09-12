@@ -58,7 +58,7 @@
 
 .header-cv-link {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--moon-silver);
@@ -644,6 +644,11 @@
   animation: border-particle 0.8s ease-out forwards;
 }
 
+.link-particle--yellow {
+  background: var(--candle-glow);
+  box-shadow: 0 0 4px var(--candle-glow);
+}
+
 .project-link-btn:hover {
   background: rgba(148, 226, 213, 0.06);
   border-color: var(--sage);
@@ -684,7 +689,7 @@
 
 .contact-link {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   align-items: center;
   gap: 0.75rem;
