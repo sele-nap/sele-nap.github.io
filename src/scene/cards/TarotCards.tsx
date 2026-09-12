@@ -1,4 +1,5 @@
 import { useLanguage } from '@/hooks/useLanguage';
+import type { SectionId } from '@/types';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Group } from 'three';
@@ -20,8 +21,8 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export interface TarotCardsProps {
-  activeSection: string | null;
-  onCardSelect: (id: string | null) => void;
+  activeSection: SectionId | null;
+  onCardSelect: (id: SectionId | null) => void;
 }
 
 export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
@@ -57,7 +58,7 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
   );
 
   const handleSelect = useCallback(
-    (id: string) => {
+    (id: SectionId) => {
       onCardSelect(activeSection === id ? null : id);
     },
     [activeSection, onCardSelect],

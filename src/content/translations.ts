@@ -29,17 +29,35 @@ const MEOW_FIXTURES_TECH = [
   'PDFKit',
 ] as const;
 
+const PORTFOLIO_TECH = ['React', 'Three.js', 'TypeScript', 'Vite'] as const;
+
 export const translations = {
   fr: {
     hero: {
       name: 'Séléna 🐾',
-      title: '• Développeuse web full-stack •',
+      title: '• Développeuse full-stack orientée frontend •',
+      subtitle:
+        '• Spécialisée React, TypeScript & expériences 3D interactives •',
+      hint: '✦ Choisissez une carte pour explorer mon parcours ✦',
+      cvLabel: 'CV',
+    },
+
+    nav: {
+      projects: 'Projets',
+      experiences: 'Expériences',
+      about: 'À propos',
+      formations: 'Formations',
+      contact: 'Contact',
+    },
+
+    modal: {
+      closeLabel: 'Fermer',
     },
 
     about: {
       title: 'À propos',
       intro:
-        'Développeuse full-stack spécialisée en JavaScript et TypeScript, avec une expérience en applications web, mobile et outils 3D interactifs. Attachée à la performance, à l’UX et à la qualité du code.',
+        'Développeuse full-stack spécialisée en JavaScript et TypeScript, avec une expérience en applications web et outils 3D interactifs. Attachée à la performance, à l’UX et à la qualité du code.',
       skills: {
         atouts: {
           title: 'Atouts',
@@ -213,6 +231,16 @@ export const translations = {
       linkLabel: 'Voir le site',
       items: [
         {
+          title: 'Portfolio interactif',
+          period: '2026',
+          company: 'Projet personnel',
+          description:
+            'Ce portfolio : une expérience interactive en cartes de tarot, avec scène 3D temps réel, illustrations procédurales canvas, animations GPU et design system Catppuccin. Bilingue FR/EN, accessible au clavier, déployé via GitHub Actions.',
+          tech: PORTFOLIO_TECH,
+          link: 'https://github.com/sele-nap/sele-nap.github.io',
+          linkLabel: 'Voir le repo',
+        },
+        {
           title: 'meow-fixtures',
           period: 'Juin 2026',
           company: 'Projet personnel',
@@ -246,7 +274,7 @@ export const translations = {
     contact: {
       title: 'Contact',
       description:
-        'Si vous souhaitez collaborer ou en savoir plus sur mon travail, n’hésitez pas à me contacter. 🐸',
+        'Ouverte aux opportunités frontend ou full-stack orientées produit, à Lyon ou en télétravail. N’hésitez pas à me contacter. 🐸',
       ...CONTACT_INFO,
     },
 
@@ -259,13 +287,29 @@ export const translations = {
   en: {
     hero: {
       name: 'Séléna 🐾',
-      title: '• Full-Stack Web Developer •',
+      title: '• Frontend-Oriented Full-Stack Developer •',
+      subtitle:
+        '• Specializing in React, TypeScript & interactive 3D experiences •',
+      hint: '✦ Pick a card to explore my journey ✦',
+      cvLabel: 'CV',
+    },
+
+    nav: {
+      projects: 'Projects',
+      experiences: 'Experience',
+      about: 'About',
+      formations: 'Education',
+      contact: 'Contact',
+    },
+
+    modal: {
+      closeLabel: 'Close',
     },
 
     about: {
       title: 'About',
       intro:
-        'Full-stack developer specializing in JavaScript and TypeScript, with a background in web, mobile, and interactive 3D applications. Driven by performance, clean UX, and maintainable code.',
+        'Full-stack developer specializing in JavaScript and TypeScript, with a background in web and interactive 3D applications. Driven by performance, clean UX, and maintainable code.',
       skills: {
         atouts: {
           title: 'Strengths',
@@ -300,10 +344,10 @@ export const translations = {
         competences: {
           title: 'Skills',
           items: [
-            'User analysis',
+            'User needs analysis',
             'Agile methodology',
             'Continuous improvement',
-            'IT monitoring',
+            'Technology watch',
           ],
         },
         interests: {
@@ -314,7 +358,7 @@ export const translations = {
     },
 
     formations: {
-      title: 'Formations',
+      title: 'Education',
       description:
         'A path at the crossroads of design, technology and digital storytelling.',
       degrees: [
@@ -349,7 +393,7 @@ export const translations = {
           highlights: [
             'Trained in digital tools (HTML/CSS, Adobe Suite), communication and cultural project design',
             'Focus on digital media production, heritage mediation, and editorial content',
-            'Included class in advanced English and digital communication',
+            'Advanced English and digital communication coursework',
           ],
         },
       ],
@@ -360,7 +404,7 @@ export const translations = {
     },
 
     experiences: {
-      title: 'Experiences',
+      title: 'Experience',
       description: 'A path at the crossroads of web, 3D and design.',
       jobs: [
         {
@@ -386,7 +430,7 @@ export const translations = {
             'Created interactive components and integrated real-time 3D rendering',
             'Improved UX and code scalability in close collaboration with the design team',
             'Delivered a stable, modular platform used by industrial clients',
-            'Key achievement: final deliverable put into production, designed from start to finish with a maintainable front/back architecture',
+            'Key achievement: designed and built end-to-end, then deployed to production with a maintainable front/back architecture',
           ],
         },
         {
@@ -438,6 +482,16 @@ export const translations = {
       linkLabel: 'Visit website',
       items: [
         {
+          title: 'Interactive Portfolio',
+          period: '2026',
+          company: 'Personal project',
+          description:
+            'This portfolio: an interactive tarot-card experience with a real-time 3D scene, procedural canvas illustrations, GPU-driven animations, and a Catppuccin design system. Bilingual FR/EN, keyboard-accessible, deployed via GitHub Actions.',
+          tech: PORTFOLIO_TECH,
+          link: 'https://github.com/sele-nap/sele-nap.github.io',
+          linkLabel: 'View repo',
+        },
+        {
           title: 'meow-fixtures',
           period: 'June 2026',
           company: 'Personal project',
@@ -461,7 +515,7 @@ export const translations = {
           period: '2022 – 2025',
           company: 'Decq',
           description:
-            'An online 3D configuration tool allowing industrial clients to customize their products in real time. Designed from scratch to finish with a maintainable front/back architecture and deployed to production.',
+            'An online 3D configuration tool allowing industrial clients to customize their products in real time. Designed and built end-to-end with a maintainable front/back architecture and deployed to production.',
           tech: CONFIG3D_TECH,
           video: '/Config3D.mp4',
         },
@@ -471,7 +525,7 @@ export const translations = {
     contact: {
       title: 'Contact',
       description:
-        'If you would like to collaborate or learn more about my work, please feel free to contact me. 🐸',
+        'Open to frontend or product-oriented full-stack roles, in Lyon or remote. Feel free to reach out. 🐸',
       ...CONTACT_INFO,
     },
 

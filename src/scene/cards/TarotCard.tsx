@@ -1,5 +1,6 @@
 import { getSharedBackTexture } from '@/scene/illustrations/card-back';
 import { createFrontTexture } from '@/scene/illustrations/card-fronts';
+import type { SectionId } from '@/types';
 import { ThreeEvent, useFrame } from '@react-three/fiber';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
@@ -14,7 +15,7 @@ interface TarotCardProps {
   def: CardDef;
   isActive: boolean;
   isAnyActive: boolean;
-  onSelect: (id: string) => void;
+  onSelect: (id: SectionId) => void;
   dealDelay: number;
 }
 

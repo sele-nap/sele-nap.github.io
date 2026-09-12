@@ -105,6 +105,7 @@ export function ProjectItem({ project, linkLabel }: ProjectItemProps) {
           muted
           loop
           playsInline
+          preload="none"
         />
       )}
     </div>

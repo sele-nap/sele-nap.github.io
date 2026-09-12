@@ -1,33 +1,51 @@
 import { ReactNode, useCallback, useEffect, useRef } from 'react';
 
 interface ModalProps {
-  isOpen: boolean;
   onClose: () => void;
+  closeLabel: string;
   children: ReactNode;
 }
 
 const FOCUSABLE_SELECTOR =
   'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function Modal({ isOpen, onClose, children }: ModalProps) {
+export function Modal({ onClose, closeLabel, children }: ModalProps) {
   const modalBoxRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (isOpen) {
-      triggerRef.current = document.activeElement as HTMLElement;
-      const timer = setTimeout(() => {
-        modalBoxRef.current?.focus();
-      }, 50);
-      return () => clearTimeout(timer);
-    } else {
-      triggerRef.current?.focus();
+    triggerRef.current = document.activeElement as HTMLElement;
+    const timer = setTimeout(() => {
+      modalBoxRef.current?.focus();
+    }, 50);
+
+    // Make the rest of the page inert while the modal is open
+    const root = document.getElementById('root');
+    const mainEl = document.querySelector('main');
+    if (mainEl) mainEl.setAttribute('inert', '');
+    if (root) {
+      // Mark header/footer inert via parent
+      const header = root.querySelector('.ui-header');
+      const footer = root.querySelector('.ui-footer');
+      if (header) (header as HTMLElement).setAttribute('inert', '');
+      if (footer) (footer as HTMLElement).setAttribute('inert', '');
     }
-  }, [isOpen]);
+
+    return () => {
+      clearTimeout(timer);
+      if (mainEl) mainEl.removeAttribute('inert');
+      if (root) {
+        const header = root.querySelector('.ui-header');
+        const footer = root.querySelector('.ui-footer');
+        if (header) (header as HTMLElement).removeAttribute('inert');
+        if (footer) (footer as HTMLElement).removeAttribute('inert');
+      }
+      triggerRef.current?.focus();
+    };
+  }, []);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (!isOpen) return;
       if (e.key === 'Escape') {
         onClose();
         return;
@@ -52,7 +70,7 @@ export function Modal({ isOpen, onClose, children }: ModalProps) {
         first.focus();
       }
     },
-    [isOpen, onClose],
+    [onClose],
   );
 
   useEffect(() => {
@@ -61,10 +79,7 @@ export function Modal({ isOpen, onClose, children }: ModalProps) {
   }, [handleKeyDown]);
 
   return (
-    <div
-      className={`modal-overlay ${isOpen ? 'visible' : ''}`}
-      onClick={onClose}
-    >
+    <div className="modal-overlay visible" onClick={onClose}>
       <div
         className="modal-box"
         ref={modalBoxRef}
@@ -72,10 +87,13 @@ export function Modal({ isOpen, onClose, children }: ModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        aria-label="Portfolio section"
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="modal-close" onClick={onClose} aria-label="Close">
+        <button
+          className="modal-close"
+          onClick={onClose}
+          aria-label={closeLabel}
+        >
           ✕
         </button>
         <div className="modal-content">{children}</div>

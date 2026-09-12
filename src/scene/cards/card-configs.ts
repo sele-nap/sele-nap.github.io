@@ -1,7 +1,8 @@
 import { cardAccents } from '@/tokens/theme';
+import type { SectionId } from '@/types';
 
 export interface CardDef {
-  id: string;
+  id: SectionId;
   symbol: string;
   roman: string;
   subtitle: string;
