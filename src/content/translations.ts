@@ -156,7 +156,7 @@ export const translations = {
       jobs: [
         {
           title: 'Développeuse Full-Stack orientée Frontend',
-          period: 'Avril 2026 – aujourd’hui',
+          period: 'Avril 2026 – Octobre 2026',
           company: 'Gedeon',
           location: 'Lyon, France',
           highlights: [
@@ -241,7 +241,7 @@ export const translations = {
         },
         {
           title: 'Plan Épargne Retraite',
-          period: 'Avril 2026 – aujourd’hui',
+          period: 'Avril 2026 – Octobre 2026',
           company: 'Gedeon',
           description:
             'Plateforme fintech dédiée à la gestion des Plans d’Épargne Retraite (PER), à destination des particuliers, des entreprises et des courtier·es. L’outil offre une vision à 360° de la retraite en agrégeant informations de retraite publique et épargne personnelle, avec simulateurs de taux de remplacement et projections de revenus.',
@@ -398,7 +398,7 @@ export const translations = {
       jobs: [
         {
           title: 'Frontend-Oriented Full-Stack Developer',
-          period: 'April 2026 – Present',
+          period: 'April 2026 – October 2026',
           company: 'Gedeon',
           location: 'Lyon, France',
           highlights: [
@@ -482,7 +482,7 @@ export const translations = {
         },
         {
           title: 'Retirement Savings Plan',
-          period: 'April 2026 – Present',
+          period: 'April 2026 – October 2026',
           company: 'Gedeon',
           description:
             'A fintech platform dedicated to managing Retirement Savings Plans (PERs), designed for individuals, businesses, and brokers. The tool provides a 360° view of retirement by combining information on public pensions and personal savings, along with replacement rate calculators and income projections.',
