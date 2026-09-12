@@ -29,7 +29,6 @@ const MEOW_FIXTURES_TECH = [
   'PDFKit',
 ] as const;
 
-const PORTFOLIO_TECH = ['React', 'Three.js', 'TypeScript', 'Vite'] as const;
 
 export const translations = {
   fr: {
@@ -230,16 +229,6 @@ export const translations = {
         'Une sélection de réalisations concrètes, de la conception à la mise en production.',
       linkLabel: 'Voir le site',
       items: [
-        {
-          title: 'Portfolio interactif',
-          period: '2026',
-          company: 'Projet personnel',
-          description:
-            'Ce portfolio : une expérience interactive en cartes de tarot, avec scène 3D temps réel, illustrations procédurales canvas, animations GPU et design system Catppuccin. Bilingue FR/EN, accessible au clavier, déployé via GitHub Actions.',
-          tech: PORTFOLIO_TECH,
-          link: 'https://github.com/sele-nap/sele-nap.github.io',
-          linkLabel: 'Voir le repo',
-        },
         {
           title: 'meow-fixtures',
           period: 'Juin 2026',
@@ -481,16 +470,6 @@ export const translations = {
       description: 'A selection of concrete work, from design to production.',
       linkLabel: 'Visit website',
       items: [
-        {
-          title: 'Interactive Portfolio',
-          period: '2026',
-          company: 'Personal project',
-          description:
-            'This portfolio: an interactive tarot-card experience with a real-time 3D scene, procedural canvas illustrations, GPU-driven animations, and a Catppuccin design system. Bilingual FR/EN, keyboard-accessible, deployed via GitHub Actions.',
-          tech: PORTFOLIO_TECH,
-          link: 'https://github.com/sele-nap/sele-nap.github.io',
-          linkLabel: 'View repo',
-        },
         {
           title: 'meow-fixtures',
           period: 'June 2026',
