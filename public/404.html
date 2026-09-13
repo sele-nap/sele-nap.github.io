@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +9,7 @@
       data-fr="Carte introuvable · sele-nap"
       data-en="Card not found · sele-nap"
     >
-      Carte introuvable · sele-nap
+      Card not found · sele-nap
     </title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -227,19 +227,19 @@
       <div class="roman" aria-hidden="true">○ · ∅ · ○</div>
       <div class="glyph" aria-hidden="true">✧</div>
       <h1 data-fr="Carte introuvable" data-en="Card Not Found">
-        Carte introuvable
+        Card Not Found
       </h1>
       <div class="accent-line" aria-hidden="true"></div>
       <p
         data-fr="Cette carte n&rsquo;existe pas dans ce jeu."
         data-en="This card doesn&rsquo;t exist in this deck."
       >
-        Cette carte n&rsquo;existe pas dans ce jeu.
+        This card doesn&rsquo;t exist in this deck.
       </p>
       <p class="subtitle">
         <span class="moon">☽</span>
         <span data-fr="perdue dans le brouillard" data-en="lost in the fog"
-          >perdue dans le brouillard</span
+          >lost in the fog</span
         >
         <span class="moon">☾</span>
       </p>
@@ -249,7 +249,7 @@
         data-fr="↩ retour au site"
         data-en="↩ back to the site"
       >
-        ↩ retour au site
+        ↩ back to the site
       </a>
     </main>
     <script>
@@ -290,7 +290,7 @@
           'fr';
         var browserLang = preferred.split('-')[0];
         var lang = browserLang === 'fr' ? 'fr' : 'en';
-        if (lang === 'fr') return;
+        if (lang === 'en') return;
         document.documentElement.lang = lang;
         document.querySelectorAll('[data-' + lang + ']').forEach(function (el) {
           el.textContent = el.getAttribute('data-' + lang);
