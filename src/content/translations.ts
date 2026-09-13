@@ -29,7 +29,6 @@ const MEOW_FIXTURES_TECH = [
   'PDFKit',
 ] as const;
 
-
 export const translations = {
   fr: {
     hero: {
@@ -56,7 +55,7 @@ export const translations = {
     about: {
       title: 'À propos',
       intro:
-        'Développeuse full-stack spécialisée en JavaScript et TypeScript, avec une expérience en applications web et outils 3D interactifs. Attachée à la performance, à l’UX et à la qualité du code.',
+        'Développeuse full-stack spécialisée en JavaScript et TypeScript, avec une expérience en applications web, mobile et outils 3D interactifs. Attachée à la performance, à l’UX et à la qualité du code.',
       skills: {
         atouts: {
           title: 'Atouts',
@@ -111,7 +110,7 @@ export const translations = {
       degrees: [
         {
           title: 'Conceptrice / Développeuse d’Applications',
-          period: '2021 – 2023',
+          period: '2021 - 2023',
           school: 'Wild Code School',
           location: 'Lyon, France',
           highlights: [
@@ -123,7 +122,7 @@ export const translations = {
         {
           title:
             'Master Création Numérique · Hypermédias & Espaces Intelligents',
-          period: '2017 – 2020',
+          period: '2017 - 2020',
           school: 'Université Savoie Mont Blanc',
           location: 'Chambéry, France',
           highlights: [
@@ -134,7 +133,7 @@ export const translations = {
         },
         {
           title: 'Licence Métiers du Livre et du Multimédia',
-          period: '2014 – 2017',
+          period: '2014 - 2017',
           school: 'Université Clermont Auvergne',
           location: 'Clermont-Ferrand, France',
           highlights: [
@@ -156,7 +155,7 @@ export const translations = {
       jobs: [
         {
           title: 'Développeuse Full-Stack orientée Frontend',
-          period: 'Avril 2026 – Octobre 2026',
+          period: 'Avril 2026 - Octobre 2026',
           company: 'Gedeon',
           location: 'Lyon, France',
           highlights: [
@@ -169,7 +168,7 @@ export const translations = {
         },
         {
           title: 'Développeuse Full-Stack 3D',
-          period: 'Mars 2022 – Juillet 2025',
+          period: 'Mars 2022 - Juillet 2025',
           company: 'Decq',
           location: 'Saint-Priest, France',
           highlights: [
@@ -182,7 +181,7 @@ export const translations = {
         },
         {
           title: 'Chargée Marketing Digital',
-          period: 'Janvier – Mars 2020',
+          period: 'Janvier - Mars 2020',
           company: 'Studio Gyhel',
           location: 'Annecy, France',
           highlights: [
@@ -192,7 +191,7 @@ export const translations = {
         },
         {
           title: 'Business Developer',
-          period: 'Octobre – Décembre 2019',
+          period: 'Octobre - Décembre 2019',
           company: 'DataLumni',
           location: 'Annecy, France',
           highlights: [
@@ -202,7 +201,7 @@ export const translations = {
         },
         {
           title: 'Conceptrice en Réalité Virtuelle',
-          period: 'Février – Mars 2019',
+          period: 'Février -  Mars 2019',
           company: 'Université Savoie Mont Blanc',
           location: 'Chambéry, France',
           highlights: [
@@ -211,7 +210,7 @@ export const translations = {
         },
         {
           title: 'Assistante Éditoriale & Communication',
-          period: 'Mai – Juin 2016',
+          period: 'Mai - Juin 2016',
           company: 'Le Léopard Masqué',
           location: 'Paris, France',
           highlights: [
@@ -231,7 +230,7 @@ export const translations = {
       items: [
         {
           title: 'meow-fixtures',
-          period: 'Juin 2026',
+          period: 'Juin - 2026',
           company: 'Projet personnel',
           description:
             'Les fixtures de test n’ont pas à être ennuyeuses. Cette CLI Node.js open-source génère des données peuplées de chats : pixel art, photos réelles, et 9 formats d’export (PNG, JSON, CSV, PDF, SQL, Markdown, TypeScript, base64). Résultats reproductibles via seed et API programmatique pour une intégration directe dans vos projets.',
@@ -241,7 +240,7 @@ export const translations = {
         },
         {
           title: 'Plan Épargne Retraite',
-          period: 'Avril 2026 – Octobre 2026',
+          period: 'Avril 2026 - Octobre 2026',
           company: 'Gedeon',
           description:
             'Plateforme fintech dédiée à la gestion des Plans d’Épargne Retraite (PER), à destination des particuliers, des entreprises et des courtier·es. L’outil offre une vision à 360° de la retraite en agrégeant informations de retraite publique et épargne personnelle, avec simulateurs de taux de remplacement et projections de revenus.',
@@ -250,7 +249,7 @@ export const translations = {
         },
         {
           title: 'Configurateur 3D',
-          period: '2022 – 2025',
+          period: '2022 - 2025',
           company: 'Decq',
           description:
             'Outil de configuration 3D en ligne permettant aux client·es industriels et particuliers de personnaliser leurs produits en temps réel. Conçu de A à Z avec une architecture front/back maintenable et mis en production.',
@@ -263,7 +262,7 @@ export const translations = {
     contact: {
       title: 'Contact',
       description:
-        'Ouverte aux opportunités frontend ou full-stack orientées produit, à Lyon ou en télétravail. N’hésitez pas à me contacter. 🐸',
+        'Si vous souhaitez collaborer ou en savoir plus sur mon travail, n’hésitez pas à me contacter. 🐸',
       ...CONTACT_INFO,
     },
 
@@ -287,7 +286,7 @@ export const translations = {
       projects: 'Projects',
       experiences: 'Experience',
       about: 'About',
-      formations: 'Education',
+      formations: 'Formations',
       contact: 'Contact',
     },
 
@@ -298,7 +297,7 @@ export const translations = {
     about: {
       title: 'About',
       intro:
-        'Full-stack developer specializing in JavaScript and TypeScript, with a background in web and interactive 3D applications. Driven by performance, clean UX, and maintainable code.',
+        'Full-stack developer specializing in JavaScript and TypeScript, with a background in web, mobile, and interactive 3D applications. Driven by performance, clean UX, and maintainable code.',
       skills: {
         atouts: {
           title: 'Strengths',
@@ -333,10 +332,10 @@ export const translations = {
         competences: {
           title: 'Skills',
           items: [
-            'User needs analysis',
+            'User analysis',
             'Agile methodology',
             'Continuous improvement',
-            'Technology watch',
+            'IT monitoring',
           ],
         },
         interests: {
@@ -347,13 +346,13 @@ export const translations = {
     },
 
     formations: {
-      title: 'Education',
+      title: 'Formations',
       description:
         'A path at the crossroads of design, technology and digital storytelling.',
       degrees: [
         {
           title: 'Application Designer and Developer',
-          period: '2021 – 2023',
+          period: '2021 - 2023',
           school: 'Wild Code School',
           location: 'Lyon, France',
           highlights: [
@@ -365,7 +364,7 @@ export const translations = {
         {
           title:
             'Master in Digital Design · Hypermedia and Intelligent Environment',
-          period: '2017 – 2020',
+          period: '2017 - 2020',
           school: 'University of Savoy Mont Blanc',
           location: 'Chambéry, France',
           highlights: [
@@ -376,13 +375,13 @@ export const translations = {
         },
         {
           title: 'Bachelor’s Degree in Book & Multimedia Studies',
-          period: '2014 – 2017',
+          period: '2014 - 2017',
           school: 'University of Clermont Auvergne',
           location: 'Clermont-Ferrand, France',
           highlights: [
             'Trained in digital tools (HTML/CSS, Adobe Suite), communication and cultural project design',
             'Focus on digital media production, heritage mediation, and editorial content',
-            'Advanced English and digital communication coursework',
+            'Included class in advanced English and digital communication',
           ],
         },
       ],
@@ -398,7 +397,7 @@ export const translations = {
       jobs: [
         {
           title: 'Frontend-Oriented Full-Stack Developer',
-          period: 'April 2026 – October 2026',
+          period: 'April 2026 - October 2026',
           company: 'Gedeon',
           location: 'Lyon, France',
           highlights: [
@@ -411,7 +410,7 @@ export const translations = {
         },
         {
           title: 'Full-Stack 3D Developer',
-          period: 'March 2022 – July 2025',
+          period: 'March 2022 - July 2025',
           company: 'Decq',
           location: 'Saint-Priest, France',
           highlights: [
@@ -424,7 +423,7 @@ export const translations = {
         },
         {
           title: 'Digital Marketing Specialist',
-          period: 'January – March 2020',
+          period: 'January - March 2020',
           company: 'Studio Gyhel',
           location: 'Annecy, France',
           highlights: [
@@ -434,7 +433,7 @@ export const translations = {
         },
         {
           title: 'Business Developer',
-          period: 'October – December 2019',
+          period: 'October - December 2019',
           company: 'DataLumni',
           location: 'Annecy, France',
           highlights: [
@@ -444,7 +443,7 @@ export const translations = {
         },
         {
           title: 'Virtual Reality Designer',
-          period: 'February – March 2019',
+          period: 'February - March 2019',
           company: 'University of Savoy Mont Blanc',
           location: 'Chambéry, France',
           highlights: [
@@ -453,7 +452,7 @@ export const translations = {
         },
         {
           title: 'Editorial & Communications Assistant',
-          period: 'May – June 2016',
+          period: 'May - June 2016',
           company: 'Le Léopard Masqué',
           location: 'Paris, France',
           highlights: [
@@ -482,7 +481,7 @@ export const translations = {
         },
         {
           title: 'Retirement Savings Plan',
-          period: 'April 2026 – October 2026',
+          period: 'April 2026 - October 2026',
           company: 'Gedeon',
           description:
             'A fintech platform dedicated to managing Retirement Savings Plans (PERs), designed for individuals, businesses, and brokers. The tool provides a 360° view of retirement by combining information on public pensions and personal savings, along with replacement rate calculators and income projections.',
@@ -491,7 +490,7 @@ export const translations = {
         },
         {
           title: '3D Configurator',
-          period: '2022 – 2025',
+          period: '2022 - 2025',
           company: 'Decq',
           description:
             'An online 3D configuration tool allowing industrial clients to customize their products in real time. Designed and built end-to-end with a maintainable front/back architecture and deployed to production.',
@@ -504,7 +503,7 @@ export const translations = {
     contact: {
       title: 'Contact',
       description:
-        'Open to frontend or product-oriented full-stack roles, in Lyon or remote. Feel free to reach out. 🐸',
+        'If you would like to collaborate or learn more about my work, please feel free to contact me. 🐸',
       ...CONTACT_INFO,
     },
 
