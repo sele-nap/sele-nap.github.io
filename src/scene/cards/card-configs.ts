@@ -1,13 +1,16 @@
 import { cardAccents } from '@/tokens/theme';
 import type { SectionId } from '@/types';
 
-export interface CardDef {
+export interface CardBaseDef {
   id: SectionId;
   symbol: string;
   roman: string;
   subtitle: string;
   label: string;
   accentColor: string;
+}
+
+export interface CardDef extends CardBaseDef {
   position: [number, number, number];
 }
 

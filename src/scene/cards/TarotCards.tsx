@@ -1,15 +1,18 @@
 import { useLanguage } from '@/hooks/useLanguage';
 import type { SectionId } from '@/types';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import type { MutableRefObject } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { Group } from 'three';
 import {
   CARD_CONFIGS,
-  CardDef,
   LANDSCAPE_SLOTS,
   PORTRAIT_SLOTS,
+  SlotDef,
 } from './card-configs';
 import { TarotCard } from './TarotCard';
+
+export type TargetPositionsRef = MutableRefObject<[number, number, number][]>;
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -20,6 +23,9 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+const PORTRAIT_ENTER = 0.85;
+const PORTRAIT_LEAVE = 0.75;
+
 export interface TarotCardsProps {
   activeSection: SectionId | null;
   onCardSelect: (id: SectionId | null) => void;
@@ -29,12 +35,10 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
   const { t } = useLanguage();
   const { size } = useThree();
   const sceneGroupRef = useRef<Group>(null);
-  const [isPortrait, setIsPortrait] = useState(false);
-  const prevPortrait = useRef(false);
+  const isPortraitRef = useRef(false);
+  const slotsRef = useRef<SlotDef[]>(LANDSCAPE_SLOTS);
 
   const slotOrder = useMemo(() => shuffle([0, 1, 2, 3, 4]), []);
-
-  const dynamicSlots = isPortrait ? PORTRAIT_SLOTS : LANDSCAPE_SLOTS;
 
   const labelMap = useMemo<Record<string, string>>(
     () => ({
@@ -47,14 +51,19 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
     [t],
   );
 
-  const cards: CardDef[] = useMemo(
+  const cardDefs = useMemo(
     () =>
-      CARD_CONFIGS.map((cfg, i) => ({
+      CARD_CONFIGS.map((cfg) => ({
         ...cfg,
         label: labelMap[cfg.id],
-        position: dynamicSlots[slotOrder[i]].position,
       })),
-    [labelMap, slotOrder, dynamicSlots],
+    [labelMap],
+  );
+
+  const targetPositions = useRef(
+    slotOrder.map(
+      (slot) => [...LANDSCAPE_SLOTS[slot].position] as [number, number, number],
+    ),
   );
 
   const handleSelect = useCallback(
@@ -67,10 +76,19 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
   useFrame(() => {
     if (!sceneGroupRef.current) return;
 
-    const portrait = size.height > size.width * 0.85;
-    if (portrait !== prevPortrait.current) {
-      prevPortrait.current = portrait;
-      setIsPortrait(portrait);
+    const ratio = size.height / size.width;
+    const wasPortrait = isPortraitRef.current;
+    const portrait = wasPortrait
+      ? ratio > PORTRAIT_LEAVE
+      : ratio > PORTRAIT_ENTER;
+
+    if (portrait !== wasPortrait) {
+      isPortraitRef.current = portrait;
+      slotsRef.current = portrait ? PORTRAIT_SLOTS : LANDSCAPE_SLOTS;
+      for (let i = 0; i < slotOrder.length; i++) {
+        const slot = slotsRef.current[slotOrder[i]];
+        targetPositions.current[i] = [...slot.position];
+      }
     }
 
     const s = portrait
@@ -100,10 +118,12 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
 
   return (
     <group ref={sceneGroupRef}>
-      {cards.map((card, i) => (
+      {cardDefs.map((card, i) => (
         <TarotCard
           key={card.id}
           def={card}
+          positionsRef={targetPositions}
+          positionIndex={i}
           isActive={activeSection === card.id}
           isAnyActive={activeSection !== null}
           onSelect={handleSelect}

@@ -1,7 +1,7 @@
 import {
   CARD_CANVAS_H,
   CARD_CANVAS_W,
-  CardDef,
+  CardBaseDef,
 } from '@/scene/cards/card-configs';
 import { cardBackgroundGradients, catppuccin } from '@/tokens/theme';
 import * as THREE from 'three';
@@ -21,14 +21,14 @@ type IllustrationDrawer = (
   ctx: CanvasRenderingContext2D,
   cx: number,
   cy: number,
-  card: CardDef,
+  card: CardBaseDef,
 ) => void;
 
 function drawAboutIllustration(
   ctx: CanvasRenderingContext2D,
   cx: number,
   cy: number,
-  card: CardDef,
+  card: CardBaseDef,
 ) {
   drawOuterRing(ctx, cx, cy, card.accentColor, 132, 118);
   drawConstellationDots(
@@ -132,7 +132,7 @@ function drawFormationsIllustration(
   ctx: CanvasRenderingContext2D,
   cx: number,
   cy: number,
-  card: CardDef,
+  card: CardBaseDef,
 ) {
   drawOuterRing(ctx, cx, cy, card.accentColor, 135, 120);
   drawConstellationDots(
@@ -329,7 +329,7 @@ function drawContactIllustration(
   ctx: CanvasRenderingContext2D,
   cx: number,
   cy: number,
-  card: CardDef,
+  card: CardBaseDef,
 ) {
   drawOuterRing(ctx, cx, cy, card.accentColor, 132);
 
@@ -438,7 +438,7 @@ function drawExperiencesIllustration(
   ctx: CanvasRenderingContext2D,
   cx: number,
   cy: number,
-  card: CardDef,
+  card: CardBaseDef,
 ) {
   drawOuterRing(ctx, cx, cy, card.accentColor, 132, 118);
   drawConstellationDots(
@@ -586,7 +586,7 @@ function drawProjectsIllustration(
   ctx: CanvasRenderingContext2D,
   cx: number,
   cy: number,
-  card: CardDef,
+  card: CardBaseDef,
 ) {
   drawOuterRing(ctx, cx, cy, card.accentColor, 132, 118);
   drawConstellationDots(
@@ -836,14 +836,14 @@ function drawCardIllustration(
   ctx: CanvasRenderingContext2D,
   W: number,
   H: number,
-  card: CardDef,
+  card: CardBaseDef,
 ) {
   const cx = W / 2;
   const cy = H * 0.375;
   ILLUSTRATION_DRAWERS[card.id]?.(ctx, cx, cy, card);
 }
 
-export function createFrontTexture(card: CardDef): THREE.CanvasTexture {
+export function createFrontTexture(card: CardBaseDef): THREE.CanvasTexture {
   const W = CARD_CANVAS_W;
   const H = CARD_CANVAS_H;
   const canvas = document.createElement('canvas');

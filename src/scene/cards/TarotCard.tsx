@@ -5,14 +5,17 @@ import { ThreeEvent, useFrame } from '@react-three/fiber';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { Group, Mesh, PointLight } from 'three';
-import { CardDef } from './card-configs';
+import { CardBaseDef } from './card-configs';
+import type { TargetPositionsRef } from './TarotCards';
 
 const prefersReducedMotion =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 interface TarotCardProps {
-  def: CardDef;
+  def: CardBaseDef;
+  positionsRef: TargetPositionsRef;
+  positionIndex: number;
   isActive: boolean;
   isAnyActive: boolean;
   onSelect: (id: SectionId) => void;
@@ -21,6 +24,8 @@ interface TarotCardProps {
 
 export function TarotCard({
   def,
+  positionsRef,
+  positionIndex,
   isActive,
   isAnyActive,
   onSelect,
@@ -129,33 +134,26 @@ export function TarotCard({
     );
 
     if (groupRef.current) {
+      const tp = positionsRef.current[positionIndex];
       if (dealProgress.current < 1) {
-        groupRef.current.position.x = THREE.MathUtils.lerp(
-          0,
-          def.position[0],
-          ease,
-        );
-        groupRef.current.position.z = THREE.MathUtils.lerp(
-          0,
-          def.position[2],
-          ease,
-        );
-        settledBaseY.current = THREE.MathUtils.lerp(-8, def.position[1], ease);
+        groupRef.current.position.x = THREE.MathUtils.lerp(0, tp[0], ease);
+        groupRef.current.position.z = THREE.MathUtils.lerp(0, tp[2], ease);
+        settledBaseY.current = THREE.MathUtils.lerp(-8, tp[1], ease);
       } else {
         const snap = prefersReducedMotion ? 1 : 1 - Math.pow(0.005, delta);
         groupRef.current.position.x = THREE.MathUtils.lerp(
           groupRef.current.position.x,
-          def.position[0],
+          tp[0],
           snap,
         );
         groupRef.current.position.z = THREE.MathUtils.lerp(
           groupRef.current.position.z,
-          def.position[2],
+          tp[2],
           snap,
         );
         settledBaseY.current = THREE.MathUtils.lerp(
           settledBaseY.current,
-          def.position[1],
+          tp[1],
           snap,
         );
       }
