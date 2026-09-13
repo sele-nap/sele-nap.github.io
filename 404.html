@@ -149,7 +149,13 @@
         opacity: 0.9;
       }
 
+      .moon {
+        font-style: normal;
+      }
+
       a.home {
+        position: relative;
+        overflow: visible;
         display: inline-flex;
         align-items: center;
         gap: 0.6rem;
@@ -170,6 +176,30 @@
           background-color 0.22s ease,
           border-color 0.22s ease,
           transform 0.22s ease;
+      }
+
+      .home-particle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 3px;
+        background: var(--peach);
+        border-radius: 50%;
+        pointer-events: none;
+        box-shadow: 0 0 4px var(--peach);
+        animation: border-particle 0.8s ease-out forwards;
+      }
+
+      @keyframes border-particle {
+        0% {
+          transform: translate(var(--sx), var(--sy));
+          opacity: 0.8;
+        }
+        100% {
+          transform: translate(var(--ex), var(--ey));
+          opacity: 0;
+        }
       }
 
       a.home:hover {
@@ -206,12 +236,12 @@
       >
         Cette carte n&rsquo;existe pas dans ce jeu.
       </p>
-      <p
-        class="subtitle"
-        data-fr="☽ perdue dans le brouillard ☾"
-        data-en="☽ lost in the fog ☾"
-      >
-        ☽ perdue dans le brouillard ☾
+      <p class="subtitle">
+        <span class="moon">☽</span>
+        <span data-fr="perdue dans le brouillard" data-en="lost in the fog"
+          >perdue dans le brouillard</span
+        >
+        <span class="moon">☾</span>
       </p>
       <a
         class="home"
@@ -222,6 +252,36 @@
         ↩ retour au site
       </a>
     </main>
+    <script>
+      (function () {
+        var homeLink = document.querySelector('a.home');
+        homeLink.addEventListener('mouseenter', function () {
+          var rect = homeLink.getBoundingClientRect();
+          var w = rect.width;
+          var h = rect.height;
+          var cx = w / 2;
+          var cy = h / 2;
+          for (var i = 0; i < 8; i++) {
+            var angle = (i / 8) * Math.PI * 2 + Math.random() * 0.4;
+            var sx = cx + (cx - 1) * Math.cos(angle);
+            var sy = cy + (cy - 1) * Math.sin(angle);
+            var dist = 12 + Math.random() * 14;
+            var span = document.createElement('span');
+            span.className = 'home-particle';
+            span.style.setProperty('--sx', sx + 'px');
+            span.style.setProperty('--sy', sy + 'px');
+            span.style.setProperty('--ex', sx + Math.cos(angle) * dist + 'px');
+            span.style.setProperty('--ey', sy + Math.sin(angle) * dist + 'px');
+            homeLink.appendChild(span);
+          }
+          setTimeout(function () {
+            homeLink.querySelectorAll('.home-particle').forEach(function (el) {
+              el.remove();
+            });
+          }, 800);
+        });
+      })();
+    </script>
     <script>
       (function () {
         var preferred =
