@@ -284,7 +284,7 @@ export const translations = {
 
     nav: {
       projects: 'Projects',
-      experiences: 'Experience',
+      experiences: 'Experiences',
       about: 'About',
       formations: 'Formations',
       contact: 'Contact',
@@ -392,7 +392,7 @@ export const translations = {
     },
 
     experiences: {
-      title: 'Experience',
+      title: 'Experiences',
       description: 'A path at the crossroads of web, 3D and design.',
       jobs: [
         {

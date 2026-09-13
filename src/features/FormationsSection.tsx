@@ -1,46 +1,11 @@
 import { SectionTitle } from '@/base/SectionTitle';
 import { DegreeItem } from '@/components/DegreeItem';
 import { useLanguage } from '@/hooks/useLanguage';
-import { useCallback, useRef, useState } from 'react';
-
-interface Particle {
-  id: number;
-  sx: number;
-  sy: number;
-  ex: number;
-  ey: number;
-}
-
-let particleId = 0;
+import { useParticles } from '@/hooks/useParticles';
 
 export function FormationsSection() {
   const { t } = useLanguage();
-  const btnRef = useRef<HTMLAnchorElement>(null);
-  const [particles, setParticles] = useState<Particle[]>([]);
-
-  const spawnParticles = useCallback(() => {
-    const btn = btnRef.current;
-    if (!btn) return;
-    const { width, height } = btn.getBoundingClientRect();
-    const cx = width / 2;
-    const cy = height / 2;
-    const pts: Particle[] = [];
-    for (let i = 0; i < 8; i++) {
-      const angle = (i / 8) * Math.PI * 2 + Math.random() * 0.4;
-      const sx = cx + (cx - 1) * Math.cos(angle);
-      const sy = cy + (cy - 1) * Math.sin(angle);
-      const dist = 12 + Math.random() * 14;
-      pts.push({
-        id: particleId++,
-        sx,
-        sy,
-        ex: sx + Math.cos(angle) * dist,
-        ey: sy + Math.sin(angle) * dist,
-      });
-    }
-    setParticles(pts);
-    setTimeout(() => setParticles([]), 800);
-  }, []);
+  const { ref, spawn, elements } = useParticles({ className: 'cv-particle' });
 
   return (
     <>
@@ -59,26 +24,13 @@ export function FormationsSection() {
         ))}
       </div>
       <a
-        ref={btnRef}
+        ref={ref as React.RefObject<HTMLAnchorElement>}
         href={t.formations.cv.fileName}
         download
         className="cv-download-btn"
-        onMouseEnter={spawnParticles}
+        onMouseEnter={() => spawn()}
       >
-        {particles.map((p) => (
-          <span
-            key={p.id}
-            className="cv-particle"
-            style={
-              {
-                '--sx': `${p.sx}px`,
-                '--sy': `${p.sy}px`,
-                '--ex': `${p.ex}px`,
-                '--ey': `${p.ey}px`,
-              } as React.CSSProperties
-            }
-          />
-        ))}
+        {elements}
         {t.formations.cv.label}
         <span className="cv-icon">
           <svg

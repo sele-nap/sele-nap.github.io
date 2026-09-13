@@ -168,6 +168,7 @@
 }
 
 .nav-overlay-item {
+  position: relative;
   appearance: none;
   background: none;
   border: none;
@@ -649,6 +650,14 @@
   box-shadow: 0 0 4px var(--candle-glow);
 }
 
+.link-particle--subtle {
+  width: 2px;
+  height: 2px;
+  background: var(--magic-purple);
+  box-shadow: 0 0 3px var(--magic-purple);
+  animation: border-particle 0.6s ease-out forwards;
+}
+
 .project-link-btn:hover {
   background: rgba(148, 226, 213, 0.06);
   border-color: var(--sage);
@@ -797,17 +806,36 @@
   }
 
   .ui-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
     padding: 0.75rem 1rem;
     align-items: center;
   }
 
-  .site-name {
-    font-size: 1.2rem;
+  .site-identity {
+    display: contents;
   }
 
-  .site-role,
+  .site-name {
+    font-size: 1.2rem;
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .header-actions {
+    grid-row: 1;
+    grid-column: 2;
+    justify-self: end;
+  }
+
   .site-specialty {
     display: none;
+  }
+
+  .site-role {
+    font-size: 0.65rem;
+    grid-row: 2;
+    grid-column: 1 / -1;
   }
 
   .menu-trigger {
