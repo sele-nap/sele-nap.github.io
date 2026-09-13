@@ -91,27 +91,34 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
       }
     }
 
-    const s = portrait
-      ? size.width < 400
-        ? 0.78
-        : size.width < 480
-          ? 0.82
-          : size.width < 768
+    let s: number;
+    if (portrait) {
+      const ws =
+        size.width < 400
+          ? 0.78
+          : size.width < 480
             ? 0.82
-            : 0.8
-      : size.width < 380
-        ? 0.45
-        : size.width < 480
-          ? 0.55
-          : size.width < 680
-            ? 0.72
-            : size.width < 900
-              ? 0.86
-              : 0.95;
+            : size.width < 768
+              ? 0.75
+              : 0.7;
+      const hs = size.height < 650 ? 0.55 : size.height < 800 ? 0.65 : 1;
+      s = Math.min(ws, hs);
+    } else {
+      s =
+        size.width < 380
+          ? 0.45
+          : size.width < 480
+            ? 0.55
+            : size.width < 680
+              ? 0.72
+              : size.width < 900
+                ? 0.86
+                : 0.95;
+    }
     sceneGroupRef.current.scale.setScalar(s);
     sceneGroupRef.current.position.y = portrait
-      ? size.width > 640
-        ? -0.6
+      ? size.height < 800
+        ? 0.15
         : -0.15
       : 0;
   });

@@ -816,6 +816,14 @@
     grid-row: 2;
     grid-column: 1 / -1;
   }
+
+  .hero-overlay {
+    bottom: 1rem;
+  }
+
+  .ui-footer {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
