@@ -91,7 +91,11 @@ export function TarotCards({ activeSection, onCardSelect }: TarotCardsProps) {
               ? 0.86
               : 0.95;
     sceneGroupRef.current.scale.setScalar(s);
-    sceneGroupRef.current.position.y = portrait ? 0.15 : 0;
+    sceneGroupRef.current.position.y = portrait
+      ? size.width > 640
+        ? -0.6
+        : -0.15
+      : 0;
   });
 
   return (
